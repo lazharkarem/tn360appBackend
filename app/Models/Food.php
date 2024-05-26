@@ -8,7 +8,12 @@ class Food extends Model
     use DefaultDatetimeFormat;
     //table name
     protected $table = 'foods';
-    
+
+     public function marque()
+    {
+        return $this->belongsTo(Marque::class, 'marque_id');
+    }
+
     public function FoodType(){
         return $this->hasOne(FoodType::class, 'id', 'type_id');
     }

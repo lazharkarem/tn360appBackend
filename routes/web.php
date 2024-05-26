@@ -38,3 +38,13 @@ Route::group(['prefix' => 'payment-mobile'], function () {
 
     Route::post('reset_password_without_token', 'AccountsController@validatePasswordRequest');
     Route::post('reset_password_with_token', 'AccountsController@resetPassword');
+
+
+    Route::post('/marques', [MarqueController::class, 'create']);
+    Route::delete('/marques/{id}', [MarqueController::class, 'delete']);
+    Route::put('/marques/{id}', [MarqueController::class, 'edit']);
+
+    Route::get('/manage-marques', 'MarqueController@index')->name('manage.marques');
+    Route::post('/marquees', 'MarqueController@store')->name('marquees.store');
+
+

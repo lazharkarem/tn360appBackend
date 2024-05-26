@@ -67,4 +67,32 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('place-api-details', 'ConfigController@place_api_details');
         Route::get('geocode-api', 'ConfigController@geocode_api');
     });
+
+
+     Route::group(['prefix' => 'marques'], function () {
+        Route::get('/', 'MarqueController@index'); // Retrieve all marques
+        Route::post('/', 'MarqueController@store'); // Create a new marque
+        Route::get('/{id}', 'MarqueController@show'); // Retrieve a specific marque
+        Route::put('/{id}', 'MarqueController@update'); // Update a specific marque
+        Route::delete('/{id}', 'MarqueController@destroy'); // Delete a specific marque
+    });
+
+
+
+    Route::group(['prefix' => 'deal'], function () {
+});
+
+    Route::get('offre', 'OffreController@getDealOffreInfo');
+    Route::get('dealDepense', 'DealDepenseController@getDealDepenseInfo');
+    Route::get('dealMarque', 'DealMarqueController@getDealMarqueInfo');
+    Route::get('dealFrequence', 'DealFrequenceController@getDealFrequenceInfo');
+    Route::get('dealAnniversaire', 'DealAnniversaireController@getDealAnniversaireInfo');
+
+
+
+
+
+
+
+
 });

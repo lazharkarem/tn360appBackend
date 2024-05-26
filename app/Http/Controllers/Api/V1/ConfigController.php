@@ -24,9 +24,66 @@ class ConfigController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$request->lat.','.$request->lng.'&key='."AIzaSyAvX8fc8UJDq3rQNnnmaiCRP5bRxvjFd1o");
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$request->lat.','.$request->lng.'&key='."BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg");
         return $response->json();
     }
+//             public function geocode_api(Request $request)
+// {
+//     // Validate incoming request
+//     $validator = Validator::make($request->all(), [
+//         'lat' => 'required|numeric',
+//         'lng' => 'required|numeric',
+//     ]);
+
+//     if ($validator->fails()) {
+//         return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+//     }
+
+//     // Make request to Google Geocoding API
+//     $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+//         'latlng' => $request->lat . ',' . $request->lng,
+//         'key' => env('GOOGLE_MAPS_API_KEY'), // Use environment variable for API key
+//     ]);
+
+//     // Decode response
+//     $data = $response->json();
+
+//     // Check if results are empty
+//     if (empty($data['results'])) {
+//         return response()->json(['error' => 'No results found'], 404);
+//     }
+
+//     // Initialize variables
+//     $country = '';
+//     $zipCode = '';
+//     $street = '';
+//     $town = '';
+
+//     // Extract address components
+//     foreach ($data['results'][0]['address_components'] as $component) {
+//         if (in_array('country', $component['types'])) {
+//             $country = $component['long_name'];
+//         }
+//         if (in_array('postal_code', $component['types'])) {
+//             $zipCode = $component['long_name'];
+//         }
+//         if (in_array('route', $component['types'])) {
+//             $street = $component['long_name'];
+//         }
+//         if (in_array('locality', $component['types']) || in_array('administrative_area_level_2', $component['types'])) {
+//             $town = $component['long_name'];
+//         }
+//     }
+
+//     // Return response
+//     return response()->json([
+//         'country' => $country,
+//         'zip_code' => $zipCode,
+//         'street' => $street,
+//         'town' => $town
+//     ]);
+// }
+
         public function get_zone(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -68,7 +125,7 @@ class ConfigController extends Controller
             'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='
             .$request['search_text']
             .'&key='
-            .'AIzaSyCMESvjp3G5FtPnukZ28_GVOuFSvEhSS9c'
+            .'BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
         );
         return $response->json();
     }
@@ -87,7 +144,7 @@ class ConfigController extends Controller
             'https://maps.googleapis.com/maps/api/place/details/json?placeid='
             .$request['placeid']
             .'&key='
-            .'AIzaSyCMESvjp3G5FtPnukZ28_GVOuFSvEhSS9c'
+            .'BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
         );
         return $response->json();
     }
