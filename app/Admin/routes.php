@@ -11,9 +11,16 @@ Route::group([
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
     $router->resource('users', UserController::class);
+    $router->resource('clients', ClientController::class);
     $router->resource('foods', FoodsController::class);
     $router->resource('food-types', FoodTypeController::class);
-    $router->resource('marques', MarqueController::class); // Add this line
+    $router->resource('marques', MarqueController::class);
+    $router->resource('deal-depense', DealDepenseController::class);
+    $router->resource('deal-frequence', DealFrequenceController::class);
+    $router->resource('deal-marque', DealMarqueController::class);
+    $router->resource('deal-anniversaire', DealAnniversaireController::class);
+    $router->resource('deal-offre', DealOffreController::class);
+
     $router->get('/', 'HomeController@index')->name('home');
 
 

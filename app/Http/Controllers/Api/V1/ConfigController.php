@@ -24,7 +24,7 @@ class ConfigController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$request->lat.','.$request->lng.'&key='."BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg");
+        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$request->lat.','.$request->lng.'&key='."AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg");
         return $response->json();
     }
 //             public function geocode_api(Request $request)
@@ -125,7 +125,7 @@ class ConfigController extends Controller
             'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='
             .$request['search_text']
             .'&key='
-            .'BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
+            .'AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
         );
         return $response->json();
     }
@@ -144,7 +144,7 @@ class ConfigController extends Controller
             'https://maps.googleapis.com/maps/api/place/details/json?placeid='
             .$request['placeid']
             .'&key='
-            .'BIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
+            .'AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
         );
         return $response->json();
     }

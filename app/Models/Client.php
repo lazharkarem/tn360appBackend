@@ -9,6 +9,9 @@ class Client extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'ID_client'; // Specify the custom primary key
+
+    // Other properties
     protected $fillable = [
         'email',
         'civilite',
@@ -16,13 +19,11 @@ class Client extends Model
         'date_de_naissance2',
         'date_de_naissance3',
         'date_de_naissance4',
-        'adress',
-        'date',
-        'date1',
-        'enabled',
-        'gouvernorat',
+        'address',
+        'date_de_naissance',
+        'statut',
+        'code_postal',
         'image',
-        'last_name',
         'nom_enfant_1',
         'nom_enfant_2',
         'nom_enfant_3',
@@ -30,10 +31,10 @@ class Client extends Model
         'nom_et_prenom',
         'password',
         'profession',
-        'random',
         'situation_familiale',
         'tel',
         'verification_code',
         'ville',
+        'gouvernorat',
     ];
 }

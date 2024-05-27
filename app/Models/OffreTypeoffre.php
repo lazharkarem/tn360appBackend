@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OffreTypeoffre extends Model
+class OffreTypeOffre extends Model
 {
-    protected $primaryKey = 'type_offre';
+    use HasFactory;
 
-    public $incrementing = false;
-
+    protected $primaryKey = 'ID_type_offre';
+    protected $table = 'offre_typeoffre';
+    public $incrementing = true;
     protected $fillable = ['type_offre'];
 
-    public $timestamps = false;
+    public function dealOffres()
+    {
+        return $this->hasMany(DealOffre::class, 'type_offre', 'type_offre');
+    }
 }

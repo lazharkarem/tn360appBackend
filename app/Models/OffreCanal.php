@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class OffreCanal extends Model
 {
-    protected $primaryKey = 'canal';
+    use HasFactory;
 
-    public $incrementing = false;
+    protected $primaryKey = 'ID_canal';
 
+    protected $table = 'offre_canal';
+    public $incrementing = true;
     protected $fillable = ['canal'];
 
-    public $timestamps = false;
+    public function dealOffres()
+    {
+        return $this->hasMany(DealOffre::class, 'canal', 'canal');
+    }
 }

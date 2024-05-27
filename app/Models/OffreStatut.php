@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class OffreStatut extends Model
 {
-    protected $primaryKey = 'statut';
+    use HasFactory;
 
-    public $incrementing = false;
-
+    protected $primaryKey = 'ID_statut';
+    protected $table = 'offre_statut';
+    public $incrementing = true;
     protected $fillable = ['statut'];
 
-    public $timestamps = false;
+    public function dealOffres()
+    {
+        return $this->hasMany(DealOffre::class, 'statut', 'statut');
+    }
 }
