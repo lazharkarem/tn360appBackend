@@ -19,7 +19,7 @@ class CreateDealAnniversaireTable extends Migration
             $table->string('segments', 255);
             $table->date('date_de_naissance')->nullable();
             $table->decimal('objectif_1', 10, 2);
-            $table->decimal('objectif_1', 10, 2);
+            $table->decimal('objectif_2', 10, 2);
             $table->decimal('objectif_3', 10, 2);
             $table->decimal('objectif_4', 10, 2);
             $table->decimal('objectif_5', 10, 2);

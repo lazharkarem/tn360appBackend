@@ -19,11 +19,12 @@ class DealFrequenceController extends AdminController
         $grid->model()->latest();
 
         $grid->column('ID_deal_frequence', __('ID'));
-          $grid->column('ID_client', __('Client'))->display(function ($clientId) {
+        $grid->column('ID_client', __('Client'))->display(function ($clientId) {
             $client = Client::find($clientId);
-            return $client ? $client->nom_et_prenom : 'Unknown Client'; // Check if client is found
+            return $client ? $client->nom_et_prenom : 'Unknown Client';
         });
         $grid->column('segments', __('Segments'));
+        $grid->column('panier_moyen', __('Panier Moyen'));
         $grid->column('objectif_frequence', __('Objectif Frequence'));
         $grid->column('compteur_frequence', __('Compteur Frequence'));
         $grid->column('gain', __('Gain'));
@@ -43,10 +44,12 @@ class DealFrequenceController extends AdminController
         $show = new Show(DealFrequence::findOrFail($id));
 
         $show->field('ID_deal_frequence', __('ID'));
-        $show->field('clients', __('Clients'))->as(function ($clients) {
-            return $clients->pluck('nom_et_prenom')->join(', ');
+        $show->field('ID_client', __('Client'))->as(function ($clientId) {
+            $client = Client::find($clientId);
+            return $client ? $client->nom_et_prenom : 'Unknown Client';
         });
         $show->field('segments', __('Segments'));
+        $show->field('panier_moyen', __('Panier Moyen'));
         $show->field('objectif_frequence', __('Objectif Frequence'));
         $show->field('compteur_frequence', __('Compteur Frequence'));
         $show->field('gain', __('Gain'));
@@ -62,20 +65,29 @@ class DealFrequenceController extends AdminController
     }
 
     protected function form()
-    {
-        $form = new Form(new DealFrequence());
+{
+    $form = new Form(new DealFrequence());
 
-        $form->multipleSelect('clients', __('Clients'))->options(Client::all()->pluck('nom_et_prenom', 'ID_client'));
-        $form->text('segments', __('Segments'));
-        $form->number('objectif_frequence', __('Objectif Frequence'));
-        $form->number('compteur_frequence', __('Compteur Frequence'));
-        $form->number('gain', __('Gain'));
-        $form->number('commande_1', __('Commande 1'));
-        $form->number('commande_2', __('Commande 2'));
-        $form->number('commande_3', __('Commande 3'));
-        $form->number('commande_4', __('Commande 4'));
-        $form->number('commande_5', __('Commande 5'));
 
-        return $form;
+    $clients = Client::all()->pluck('nom_et_prenom', 'ID_client');
+    $options = [];
+    foreach ($clients as $clientId => $nom_et_prenom) {
+        $options[$clientId] = $clientId . ' - ' . $nom_et_prenom;
     }
+    $form->select('ID_client', __('Client'))->options($options);
+
+    $form->text('segments', __('Segments'));
+    $form->decimal('panier_moyen', __('Panier Moyen'))->rules('required');
+    $form->decimal('objectif_frequence', __('Objectif Frequence'));
+    $form->decimal('compteur_frequence', __('Compteur Frequence'));
+    $form->decimal('gain', __('Gain'));
+    $form->decimal('commande_1', __('Commande 1'));
+    $form->decimal('commande_2', __('Commande 2'));
+    $form->decimal('commande_3', __('Commande 3'));
+    $form->decimal('commande_4', __('Commande 4'));
+    $form->decimal('commande_5', __('Commande 5'));
+
+    return $form;
+}
+
 }

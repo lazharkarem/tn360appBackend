@@ -95,7 +95,14 @@ class DealDepenseController extends AdminController
     {
         $form = new Form(new DealDepense());
 
-        $form->select('ID_client', __('Client'))->options(Client::all()->pluck('nom_et_prenom', 'ID_client'));
+        $clients = Client::all()->pluck('nom_et_prenom', 'ID_client');
+        $options = [];
+        foreach ($clients as $clientId => $nom_et_prenom) {
+        $options[$clientId] = $clientId . ' - ' . $nom_et_prenom;
+        }
+        $form->select('ID_client', __('Client'))->options($options);
+
+
         $form->text('segments', __('Segments'));
         $form->number('objectif_1', __('Objectif 1'));
         $form->number('objectif_2', __('Objectif 2'));

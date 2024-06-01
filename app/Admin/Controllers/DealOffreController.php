@@ -9,6 +9,8 @@ use Encore\Admin\Show;
 use App\Models\DealOffre;
 use App\Models\Client;
 
+use Encore\Admin\Layout\Content;
+
 class DealOffreController extends AdminController
 {
     protected $title = 'Deal Offre';
@@ -59,7 +61,12 @@ class DealOffreController extends AdminController
     {
         $form = new Form(new DealOffre());
 
-        $form->select('ID_client', __('Client'))->options(Client::all()->pluck('nom_et_prenom', 'ID_client'));
+        $clients = Client::all()->pluck('nom_et_prenom', 'ID_client');
+        $options = [];
+        foreach ($clients as $clientId => $nom_et_prenom) {
+        $options[$clientId] = $clientId . ' - ' . $nom_et_prenom;
+        }
+        $form->select('ID_client', __('Client'))->options($options);
         $form->date('date_debut', __('Date Debut'));
         $form->date('date_fin', __('Date Fin'));
         $form->select('canal', __('Canal'))->options([

@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Encore\Admin\Traits\DefaultDatetimeFormat;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable, DefaultDatetimeFormat;
 
-    protected $primaryKey = 'ID_client'; // Specify the custom primary key
+    protected $primaryKey = 'ID_client';
+    protected $table = 'client';
 
     // Other properties
     protected $fillable = [
@@ -36,5 +41,20 @@ class Client extends Model
         'verification_code',
         'ville',
         'gouvernorat',
+    ];
+
+
+     protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 }
