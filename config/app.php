@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://localhost'),
+    'url' => env('APP_URL', 'https://tn360-lqd25ixbvq-ew.a.run.app'),
 
     'asset_url' => env('ASSET_URL', null),
 
