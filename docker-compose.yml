@@ -14,7 +14,7 @@ services:
         environment:
             APP_ENV: local
             APP_KEY: base64:WCPyXwmMZszSnG1mbDTw4jywbcL4XXv0NW0zPSZD7ok=
-            APP_URL: https://localhost:8000
+            APP_URL: https://tn360-lqd25ixbvq-ew.a.run.app
             DB_CONNECTION: mysql
             DB_HOST: db
             DB_PORT: 3306
