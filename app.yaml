@@ -1,0 +1,28 @@
+runtime: custom
+env: flex
+
+runtime_config:
+  document_root: public
+
+env_variables:
+  APP_ENV: production
+  APP_KEY: "base64:f4JkiG/bwpP1j/VKFlnErOJtrIGYtwwNbQcskf8D1/g="
+  APP_STORAGE: /tmp
+  APP_DEBUG: false
+  VIEW_COMPILED_PATH: /tmp
+  CACHE_DRIVER: file
+  SESSION_DRIVER: file
+  LOG_CHANNEL: stderr
+  APP_URL: "https://tn-421315.appspot.com"
+
+  DB_CONNECTION: mysql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_DATABASE: "tn360"
+  DB_USERNAME: "tn360"
+  DB_PASSWORD: "Kr,Lr}&~GXa?~7|Y"
+
+beta_settings:
+  cloud_sql_instances: "tn-421315:europe-west1:tn360"
+
+entrypoint: composer install --no-dev --optimize-autoloader

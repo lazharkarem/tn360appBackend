@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - db
+        environment:
+            APP_ENV: local
+            APP_KEY: base64:WCPyXwmMZszSnG1mbDTw4jywbcL4XXv0NW0zPSZD7ok=
+            APP_URL: https://localhost:8000
+            DB_CONNECTION: mysql
+            DB_HOST: db
+            DB_PORT: 3306
+            DB_DATABASE: laravel_shopping_app
+            DB_USERNAME: root
+            DB_PASSWORD: rootroot
+            MAIL_MAILER: smtp
+            MAIL_HOST: mailhog
+            MAIL_PORT: 1025
+            MAIL_USERNAME: null
+            MAIL_PASSWORD: null
+            MAIL_ENCRYPTION: null
+            MAIL_FROM_ADDRESS: null
+            MAIL_FROM_NAME: "Laravel"
+
+    db:
+        image: mysql:8.0
+
+        ports:
+            - "3307:3306"
+
+        environment:
+            MYSQL_DATABASE: laravel_shopping_app
+            MYSQL_ROOT_PASSWORD: rootroot
+            MYSQL_ROOT_HOST: "%"
