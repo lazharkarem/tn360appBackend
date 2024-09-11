@@ -13,10 +13,10 @@ env_variables:
   CACHE_DRIVER: file
   SESSION_DRIVER: file
   LOG_CHANNEL: stderr
-  APP_URL: "https://tn-421315.appspot.com"
+  APP_URL: "http://tn-421315.appspot.com"
 
   DB_CONNECTION: mysql
-  DB_HOST: 127.0.0.1
+  DB_HOST: /cloudsql/tn-421315:europe-west1:tn360
   DB_PORT: 3306
   DB_DATABASE: "tn360"
   DB_USERNAME: "tn360"

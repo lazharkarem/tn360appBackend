@@ -71,6 +71,11 @@ return [
             'model' => App\Models\Client::class,
         ],
 
+        'client' => [
+            'driver' => 'database',
+            'table' => 'client',
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -93,8 +98,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'client' => [
+            'provider' => 'client',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
