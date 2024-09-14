@@ -9,12 +9,18 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 
-class Client extends Authenticatable
+class Client extends Authenticatable implements MustVerifyEmail
+
 {
     use HasApiTokens, HasFactory, Notifiable, DefaultDatetimeFormat;
 
     protected $primaryKey = 'ID_client';
     protected $table = 'client';
+
+    public function getAuthIdentifierName()
+    {
+        return 'ID_client';
+    }
 
     // Other properties
     protected $fillable = [
