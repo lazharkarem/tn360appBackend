@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'clients',
+        'passwords' => 'users',  // Default password reset configuration for users
     ],
 
     /*
@@ -27,23 +27,19 @@ return [
     | Of course, a great default configuration has been defined for you
     | here which uses session storage and the Eloquent user provider.
     |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
-    |
-    | Supported: "session"
+    | Supported: "session", "token"
     |
     */
 
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'clients',
+            'provider' => 'users',  // For admin dashboard
         ],
 
         'api' => [
-            'driver' => 'passport',
-            'provider' => 'clients',
+            'driver' => 'passport',  // Assuming you're using Passport for API
+            'provider' => 'clients',  // For Flutter clients
             'hash' => false,
         ],
     ],
@@ -66,21 +62,15 @@ return [
     */
 
     'providers' => [
-        'clients' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
+            'model' => App\Models\User::class,  // Model for admin dashboard
         ],
 
-        // Uncomment if you have a database provider as well
-        // 'clients' => [
-        //     'driver' => 'database',
-        //     'table' => 'client',
-        // ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Client::class,  // Model for Flutter clients
+        ],
     ],
 
     /*
@@ -99,9 +89,16 @@ return [
     */
 
     'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
         'clients' => [
             'provider' => 'clients',
-            'table' => 'password_resets',
+            'table' => 'password_resets',  // You might need a separate table if required
             'expire' => 60,
             'throttle' => 60,
         ],

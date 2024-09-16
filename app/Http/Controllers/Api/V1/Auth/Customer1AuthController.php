@@ -13,57 +13,57 @@ class Customer1AuthController extends Controller
 {
 
 
+//     public function login(Request $request)
+// {
+//     $credentials = $request->only('email', 'password');
+
+//     if (Auth::attempt($credentials)) {
+//         $client = Auth::user();
+//         $token = $client->createToken('360TNAuth')->accessToken;
+
+//         return response()->json([
+//             'client' => $client,
+//             'token' => $token
+//         ], 200);
+//     }
+
+//     return response()->json(['error' => 'Invalid credentials'], 401);
+// }
+
     public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
 
-    if (Auth::attempt($credentials)) {
-        $client = Auth::user();
-        $token = $client->createToken('MyAppToken')->accessToken;
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
 
-        return response()->json([
-            'client' => $client, 
-            'token' => $token
-        ], 200);
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) { // Use Auth::attempt
+            $client = Auth::user(); // Retrieve the authenticated user
+
+            // Check if the user's statut is between 0 and 1
+            if ($client->statut == 0 || $client->statut == 1) {
+                $token = $client->createToken('360TNAuth')->accessToken;
+
+                // Return the entire user object along with the token
+                return response()->json(['user' => $client, 'token' => $token], 200);
+            } else {
+                // If the user's statut is not between 0 and 1, return an error
+                $errors = [];
+                array_push($errors, ['code' => 'auth-003', 'message' => trans('messages.your_account_is_blocked')]);
+                return response()->json(['errors' => $errors], 403);
+            }
+        } else {
+            $errors = [];
+            array_push($errors, ['code' => 'auth-001', 'message' => 'Unauthorized.X']);
+            return response()->json(['errors' => $errors], 401);
+        }
     }
-
-    return response()->json(['error' => 'Invalid credentials'], 401);
-}
-
-    // public function login(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required|min:6'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-    //     }
-
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::attempt($credentials)) { // Use Auth::attempt
-    //         $client = Auth::user(); // Retrieve the authenticated user
-
-    //         // Check if the user's statut is between 0 and 1
-    //         if ($client->statut == 0 || $client->statut == 1) {
-    //             $token = $client->createToken('360TNAuth')->accessToken;
-
-    //             // Return the entire user object along with the token
-    //             return response()->json(['user' => $client, 'token' => $token], 200);
-    //         } else {
-    //             // If the user's statut is not between 0 and 1, return an error
-    //             $errors = [];
-    //             array_push($errors, ['code' => 'auth-003', 'message' => trans('messages.your_account_is_blocked')]);
-    //             return response()->json(['errors' => $errors], 403);
-    //         }
-    //     } else {
-    //         $errors = [];
-    //         array_push($errors, ['code' => 'auth-001', 'message' => 'Unauthorized.']);
-    //         return response()->json(['errors' => $errors], 401);
-    //     }
-    // }
 
     public function register(Request $request)
     {

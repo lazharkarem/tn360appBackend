@@ -32,6 +32,10 @@
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
+        "classmap": [
+            "database/factories/",
+            "database/seeders/"
+        ],
         "files": [
             "app/CentralLogic/helpers.php"
         ],
