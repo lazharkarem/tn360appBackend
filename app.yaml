@@ -6,7 +6,7 @@ runtime_config:
 
 env_variables:
   APP_ENV: production
-  APP_KEY: "base64:f4JkiG/bwpP1j/VKFlnErOJtrIGYtwwNbQcskf8D1/g="
+  APP_KEY: "base64:22eqQFbXr2PEvrjViF0e7EIdzRkIqjnQfU5IOQTl+dQ="
   APP_STORAGE: /tmp
   APP_DEBUG: false
   VIEW_COMPILED_PATH: /tmp

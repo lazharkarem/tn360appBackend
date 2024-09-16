@@ -1,4 +1,4 @@
-APP_KEY: "base64:f4JkiG/bwpP1j/VKFlnErOJtrIGYtwwNbQcskf8D1/g="
+APP_KEY: "base64:22eqQFbXr2PEvrjViF0e7EIdzRkIqjnQfU5IOQTl+dQ="
 APP_URL: "https://tn360-lqd25ixbvq-ew.a.run.app"
 DB_CONNECTION: "mysql"
 DB_SOCKET: "/cloudsql/tn-421315:europe-west1:tn360"
