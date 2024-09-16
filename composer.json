@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "kreait/firebase-php": "^5.9",
         "laravel/framework": "^8.65",
-        "laravel/passport": "^10.2",
+        "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "paypal/rest-api-sdk-php": "^1.14",

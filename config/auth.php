@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',  // Default password reset configuration for users
+        'passwords' => 'clients',  // Default password reset configuration for users
     ],
 
     /*
@@ -34,12 +34,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',  // For admin dashboard
+            'provider' => 'client',  // For admin dashboard
         ],
 
         'api' => [
             'driver' => 'passport',  // Assuming you're using Passport for API
-            'provider' => 'clients',  // For Flutter clients
+            'provider' => 'client',  // For Flutter clients
             'hash' => false,
         ],
     ],
@@ -67,7 +67,7 @@ return [
             'model' => App\Models\User::class,  // Model for admin dashboard
         ],
 
-        'clients' => [
+        'client' => [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,  // Model for Flutter clients
         ],
@@ -96,8 +96,8 @@ return [
             'throttle' => 60,
         ],
 
-        'clients' => [
-            'provider' => 'clients',
+        'client' => [
+            'provider' => 'client',
             'table' => 'password_resets',  // You might need a separate table if required
             'expire' => 60,
             'throttle' => 60,

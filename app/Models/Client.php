@@ -17,10 +17,7 @@ class Client extends Authenticatable implements MustVerifyEmail
     protected $primaryKey = 'ID_client';
     protected $table = 'client';
 
-    public function getAuthIdentifierName()
-    {
-        return 'ID_client';
-    }
+
 
     // Other properties
     protected $fillable = [
