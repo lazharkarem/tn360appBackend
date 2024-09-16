@@ -45,7 +45,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '/cloudsql/tn-421315:europe-west1:tn360'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'tn360'),
             'username' => env('DB_USERNAME', 'tn360'),
