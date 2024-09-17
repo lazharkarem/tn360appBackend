@@ -34,12 +34,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'client',  // For admin dashboard
+            'provider' => 'users',  // For admin dashboard
         ],
 
         'api' => [
-            'driver' => 'passport',  // Assuming you're using Passport for API
-            'provider' => 'client',  // For Flutter clients
+            'driver' => 'sanctum',
+            'provider' => 'client',
             'hash' => false,
         ],
     ],
