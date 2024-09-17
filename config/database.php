@@ -43,45 +43,45 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        //    'mysql' => [
-        //         'driver' => 'mysql',
-        //         'host' => env('DB_HOST', '127.0.0.1'), // Localhost for local development
-        //         'port' => env('DB_PORT', '3306'),
-        //         'database' => env('DB_DATABASE', 'laravel_shopping_app'), // Your local database name
-        //         'username' => env('DB_USERNAME', 'root'), // Your local MySQL username
-        //         'password' => env('DB_PASSWORD', 'rootroot'), // Your local MySQL password
-        //         'unix_socket' => env('DB_SOCKET', ''), // Leave this empty for local TCP connection
+           'mysql' => [
+                'driver' => 'mysql',
+                'host' => env('DB_HOST', '127.0.0.1'), // Localhost for local development
+                'port' => env('DB_PORT', '3306'),
+                'database' => env('DB_DATABASE', 'laravel_shopping_app'), // Your local database name
+                'username' => env('DB_USERNAME', 'root'), // Your local MySQL username
+                'password' => env('DB_PASSWORD', 'rootroot'), // Your local MySQL password
+                'unix_socket' => env('DB_SOCKET', ''), // Leave this empty for local TCP connection
 
-        //         'charset' => 'utf8mb4',
-        //         'collation' => 'utf8mb4_unicode_ci',
-        //         'prefix' => '',
-        //         'prefix_indexes' => true,
-        //         'strict' => true,
-        //         'engine' => null,
-        //         'options' => extension_loaded('pdo_mysql') ? array_filter([
-        //             PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-        //         ]) : [],
-        // ],
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                'prefix_indexes' => true,
+                'strict' => true,
+                'engine' => null,
+                'options' => extension_loaded('pdo_mysql') ? array_filter([
+                    PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                ]) : [],
+        ],
 
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'tn360'),
-            'username' => env('DB_USERNAME', 'tn360'),
-            'password' => env('DB_PASSWORD', 'Kr,Lr}&~GXa?~7|Y'),
-            'unix_socket' => env('DB_SOCKET', '/cloudsql/tn-421315:europe-west1:tn360'),
+    //     'mysql' => [
+    //         'driver' => 'mysql',
+    //         'host' => env('DB_HOST', '127.0.0.1'),
+    //         'port' => env('DB_PORT', '3306'),
+    //         'database' => env('DB_DATABASE', 'tn360'),
+    //         'username' => env('DB_USERNAME', 'tn360'),
+    //         'password' => env('DB_PASSWORD', 'Kr,Lr}&~GXa?~7|Y'),
+    //         'unix_socket' => env('DB_SOCKET', '/cloudsql/tn-421315:europe-west1:tn360'),
 
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-    ],
+    //         'charset' => 'utf8mb4',
+    //         'collation' => 'utf8mb4_unicode_ci',
+    //         'prefix' => '',
+    //         'prefix_indexes' => true,
+    //         'strict' => true,
+    //         'engine' => null,
+    //         'options' => extension_loaded('pdo_mysql') ? array_filter([
+    //             PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+    //         ]) : [],
+    // ],
 
         'pgsql' => [
             'driver' => 'pgsql',

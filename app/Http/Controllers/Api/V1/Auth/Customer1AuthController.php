@@ -31,7 +31,7 @@ class Customer1AuthController extends Controller
             if ($client->statut == 0 || $client->statut == 1) {
                 // Generate access token using Sanctum
                 $token = $client->createToken('360TNAuth')->plainTextToken;
-                return response()->json(['user' => $client, 'token' => $token], 200);
+                return response()->json(['client' => $client, 'token' => $token], 200);
             } else {
                 $errors = [];
                 array_push($errors, ['code' => 'auth-003', 'message' => trans('messages.your_account_is_blocked')]);
@@ -112,3 +112,4 @@ class Customer1AuthController extends Controller
         return response()->json(['token' => $token, 'is_tel_verified' => 0, 'tel_verify_end_url' => "api/v1/auth/verify-phone"], 200);
     }
 }
+
