@@ -16,6 +16,7 @@ class OffreTypeOffre extends Model
 
     public function dealOffres()
     {
+        
         return $this->hasMany(DealOffre::class, 'type_offre', 'type_offre');
     }
 }
