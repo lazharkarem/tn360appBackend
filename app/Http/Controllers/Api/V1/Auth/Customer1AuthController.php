@@ -49,7 +49,7 @@ class Customer1AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nom_et_prenom' => 'required',
-            'email' => 'required|email|unique:clients,email',
+            'email' => 'required|email|unique:client',
             'civilite' => 'nullable|string',
             'date_de_naissance1' => 'nullable|string',
             'date_de_naissance2' => 'nullable|string',
@@ -66,7 +66,7 @@ class Customer1AuthController extends Controller
             'image' => 'nullable|string',
             'profession' => 'nullable|string',
             'situation_familiale' => 'nullable|string',
-            'tel' => 'required|string|unique:clients,tel',
+            'tel' => 'required|string|unique:client',
             'verification_code' => 'nullable|string',
             'ville' => 'nullable|string',
             'gouvernorat' => 'nullable|string',
