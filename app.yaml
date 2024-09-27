@@ -25,4 +25,25 @@ env_variables:
 beta_settings:
   cloud_sql_instances: "tn-421315:europe-west1:tn360"
 
+# Ensure Authorization header is passed
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+    http_headers:
+      Authorization: "Bearer"
+
+# Entry point to install dependencies and optimize the autoloader
 entrypoint: composer install --no-dev --optimize-autoloader
+
+# Force HTTPS redirects in production
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_num_instances: 1
+  max_num_instances: 2
+
+network:
+  session_affinity: true # Enable sticky sessions if needed
+  forwarded_ports:
+    - 443 # Forward HTTPS port
+
