@@ -10,16 +10,16 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable implements MustVerifyEmail
-
 {
     use HasApiTokens, HasFactory, Notifiable, DefaultDatetimeFormat;
 
+    // Primary key
     protected $primaryKey = 'ID_client';
+
+    // Table name
     protected $table = 'client';
 
-
-
-    // Other properties
+    // Fillable attributes
     protected $fillable = [
         'email',
         'civilite',
@@ -46,18 +46,15 @@ class Client extends Authenticatable implements MustVerifyEmail
         'gouvernorat',
     ];
 
-
-     protected $hidden = [
+    // Hidden attributes (won't be visible when serialized)
+    protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
+    // Attribute casting
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
 }

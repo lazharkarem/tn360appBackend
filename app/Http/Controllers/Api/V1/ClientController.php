@@ -4,31 +4,27 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Client; // Import the Client model
+use App\Models\Client;
+use App\Models\ClientAddress;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
-class Customer1Controller extends Controller
+class ClientController extends Controller
 {
-    public function addressList(Request $request)
+    public function address_list(Request $request)
     {
-        $client = $request->user();
-        $clientId = $client->ID_client;
-        return response()->json(Client::find($clientId)->latest()->get(), 200);
+        return response()->json(ClientAddress::where('ID_client', $request->user()->ID_client)->latest()->get(), 200);
     }
 
     public function info(Request $request)
     {
-        $client = $request->user();
-        $data = $client;
-
-        $data['order_count'] = 0;
-        $data['member_since_days'] = (integer)$client->created_at->diffInDays();
-
+        $data = $request->user();
+        $data['order_count'] = 0; // Placeholder for actual count
+        $data['member_since_days'] = (integer)$request->user()->created_at->diffInDays();
         return response()->json($data, 200);
     }
 
-    public function addNewAddress(Request $request)
+    public function add_new_address(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
@@ -37,11 +33,11 @@ class Customer1Controller extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
+            return response()->json(['errors' => "Error with the address"], 403);
         }
 
         $address = [
-            'ID_client' => $request->user()->ID_client,
+            'ID_client' => $request->user()->ID_client, // Use ID_client
             'contact_person_name' => $request->contact_person_name,
             'contact_person_number' => $request->contact_person_number,
             'address' => $request->address,
@@ -51,12 +47,12 @@ class Customer1Controller extends Controller
             'updated_at' => now()
         ];
 
-        DB::table('client_addresses')->insert($address);
+        ClientAddress::create($address); // Use the Eloquent model for insertion
 
         return response()->json(['message' => trans('messages.successfully_added')], 200);
     }
 
-    public function updateAddress(Request $request, $id)
+    public function update_address(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
@@ -71,6 +67,7 @@ class Customer1Controller extends Controller
             return response()->json(['errors' => $validator->errors()], 403);
         }
 
+        // Update the correct table and reference the right columns
         $address = [
             'ID_client' => $request->user()->ID_client,
             'contact_person_name' => $request->contact_person_name,
@@ -79,14 +76,12 @@ class Customer1Controller extends Controller
             'address' => $request->address,
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
-            'zone_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now() // No need to set created_at on update
         ];
 
-        DB::table('client_addresses')->where('ID_client', $request->user()->ID_client)->update($address);
+        ClientAddress::where('id', $id)->update($address); // Use the correct ID for the update
 
-        return response()->json(['message' => trans('messages.updated_successfully'), 'zone_id' => $zone->id], 200);
+        return response()->json(['message' => trans('messages.updated_successfully')], 200);
     }
 
     public function updateCmFirebaseToken(Request $request)

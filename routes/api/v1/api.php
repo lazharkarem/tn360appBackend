@@ -34,17 +34,17 @@ Route::group(['namespace' => 'Api\V1'], function () {
 
 
             Route::get('info', 'CustomerController@info');
-            Route::get('info1', 'Customer1Controller@info');
+            Route::get('info1', 'ClientController@info');
             Route::post('update-profile', 'CustomerController@update_profile');
             Route::post('update-interest', 'CustomerController@update_interest');
             Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
             Route::get('suggested-foods', 'CustomerController@get_suggested_food');
 
         Route::group(['prefix' => 'address'], function () {
-            Route::get('list', 'CustomerController@address_list');
-            Route::post('add', 'CustomerController@add_new_address');
-            Route::put('update/{id}', 'CustomerController@update_address');
-            Route::delete('delete', 'CustomerController@delete_address');
+            Route::get('list', 'ClientController@address_list');
+            Route::post('add', 'ClientController@add_new_address');
+            Route::put('update/{id}', 'ClientController@update_address');
+            Route::delete('delete', 'ClientController@delete_address');
         });
 
 
