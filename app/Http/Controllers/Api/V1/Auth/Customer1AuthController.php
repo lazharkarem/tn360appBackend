@@ -40,7 +40,7 @@ class Customer1AuthController extends Controller
         } else {
             // Invalid credentials
             $errors = [];
-            array_push($errors, ['code' => 'auth-001', 'message' => 'Unauthorized.X']);
+            array_push($errors, ['code' => 'auth-001', 'message' => 'Unauthorized.']);
             return response()->json(['errors' => $errors], 401);
         }
     }
