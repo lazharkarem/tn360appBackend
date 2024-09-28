@@ -16,11 +16,13 @@ class ClientController extends Controller
         return response()->json(ClientAddress::where('ID_client', $request->user()->ID_client)->latest()->get(), 200);
     }
 
-    public function info(Request $request)
+   public function info(Request $request)
     {
         $data = $request->user();
-        $data['order_count'] = 0; // Placeholder for actual count
-        $data['member_since_days'] = (integer)$request->user()->created_at->diffInDays();
+
+        $data['order_count'] =0;//(integer)$request->user()->orders->count();
+        $data['member_since_days'] =(integer)$request->user()->created_at->diffInDays();
+        //unset($data['orders']);
         return response()->json($data, 200);
     }
 

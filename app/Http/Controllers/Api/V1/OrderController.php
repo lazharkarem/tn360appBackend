@@ -26,8 +26,10 @@ class OrderController extends Controller
         }
 
         $address = [
-            'contact_person_name' => $request->contact_person_name?$request->contact_person_name:$request->user()->f_name.' '.$request->user()->f_name,
-            'contact_person_number' => $request->contact_person_number?$request->contact_person_number:$request->user()->phone,
+            'contact_person_name' => $request->contact_person_name ?: ($request->user()->nom_et_prenom . ' ' . $request->user()->nom_et_prenom),
+            'contact_person_number' => $request->contact_person_number ?: $request->user()->tel,
+
+
             'address' => $request->address,
             'longitude' => (string)$request->longitude,
             'latitude' => (string)$request->latitude,
@@ -37,7 +39,7 @@ class OrderController extends Controller
 
         $order = new Order();
         $order->id = 100000 + Order::all()->count() + 1; //checked
-        $order->user_id = $request->user()->id; //checked
+        $order->ID_client = $request->user()->ID_client;//checked
         $order->order_amount = $request['order_amount']; //checked
         $order->order_note = $request['order_note']; //checked
         $order->delivery_address = json_encode($address); //checked
@@ -123,7 +125,7 @@ class OrderController extends Controller
 
     public function get_order_list(Request $request)
     {
-        $orders = Order::withCount('details')->where(['user_id' => $request->user()->id])->get()->map(function ($data) {
+        $orders = Order::withCount('details')->where(['ID_client' => $request->user()->ID_client])->get()->map(function ($data) {
             $data['delivery_address'] = $data['delivery_address']?json_decode($data['delivery_address']):$data['delivery_address'];
 
             return $data;

@@ -60,7 +60,7 @@ class Helpers
                 try{
                     DB::table('user_notifications')->insert([
                         'data'=>json_encode($data),
-                        'user_id'=>$order->user_id,
+                        'ID_client'=>$order->ID_client,
                         'created_at'=>now(),
                         'updated_at'=>now(),
                     ]);

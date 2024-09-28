@@ -13,7 +13,7 @@ class Order extends Model
         'total_tax_amount' => 'float',
         'delivery_address_id' => 'integer',
         'delivery_charge' => 'float',
-        'user_id' => 'integer',
+        'ID_client' => 'integer',
         'scheduled' => 'integer',
         'details_count' => 'integer',
         'created_at' => 'datetime',
@@ -35,8 +35,8 @@ class Order extends Model
     {
         return $query->where('order_type','<>', 'pos');
     }
-    public function user()
+    public function client()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(Client::class,'ID_client');
     }
 }

@@ -20,7 +20,7 @@ class PaymentController extends Controller
 
         $customer = User::find($request['customer_id']);
 
-        $order = Order::where(['id' => $request->order_id, 'user_id' => $request['customer_id']])->first();
+        $order = Order::where(['id' => $request->order_id, 'ID_client' => $request['customer_id']])->first();
 
         if (isset($customer) && isset($order)) {
             $data = [
@@ -37,7 +37,7 @@ class PaymentController extends Controller
 
     public function success()
     {
-        $order = Order::where(['id' => session('order_id'), 'user_id'=>session('customer_id')])->first();
+        $order = Order::where(['id' => session('order_id'), 'ID_client'=>session('customer_id')])->first();
         /*if ($order->callback != null) {
             return redirect($order->callback . '&status=success');
         }
@@ -47,7 +47,7 @@ class PaymentController extends Controller
 
     public function fail()
     {
-        $order = Order::where(['id' => session('order_id'), 'user_id'=>session('customer_id')])->first();
+        $order = Order::where(['id' => session('order_id'), 'ID_client'=>session('customer_id')])->first();
         /*if ($order->callback != null) {
             return redirect($order->callback . '&status=fail');
         }
