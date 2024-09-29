@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Client;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log; // Import Log facade
+use App\Mail\PasswordChangedNotification;
 
 class ForgotPasswordController extends Controller
 {
@@ -47,43 +48,50 @@ class ForgotPasswordController extends Controller
     }
 
     // Unified reset method
-    public function reset(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:client,email',
-            'token' => 'required',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        }
 
-        // Log the reset request for debugging
-        Log::info('Password reset request', [
-            'email' => $request->email,
-            'token' => $request->token,
-        ]);
+// public function reset(Request $request)
+// {
+//     $validator = Validator::make($request->all(), [
+//         'email' => 'required|email|exists:client,email',
+//         'token' => 'required',
+//         'password' => 'required|string|min:6|confirmed',
+//     ]);
 
-        $status = Password::broker('clients')->reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($client, $password) {
-                $client->forceFill([
-                    'password' => bcrypt($password),
-                ])->save();
-            }
-        );
+//     if ($validator->fails()) {
+//         return response()->json(['errors' => $validator->errors()], 403);
+//     }
 
-        // Log the status of the reset operation
-        Log::info('Reset status', ['status' => $status]);
+//     // Log the reset request for debugging
+//     Log::info('Password reset request', [
+//         'email' => $request->email,
+//         'token' => $request->token,
+//     ]);
 
-        if ($status === Password::PASSWORD_RESET) {
-            return response()->json(['message' => trans($status)], 200);
-        }
+//     $status = Password::broker('clients')->reset(
+//         $request->only('email', 'password', 'password_confirmation', 'token'),
+//         function ($client, $password) {
+//             $client->forceFill([
+//                 'password' => bcrypt($password),
+//             ])->save();
 
-        return response()->json(['message' => trans($status)], 400);
-    }
+//             // Send notification email after successful password reset
+//             Mail::to($client->email)->send(new PasswordChangedNotification($client));
+//         }
+//     );
 
+//     // Log the status of the reset operation
+//     Log::info('Reset status', ['status' => $status]);
+
+//     if ($status === Password::PASSWORD_RESET) {
+//         return response()->json(['message' => 'Votre mot de passe a été réinitialisé avec succès!'], 200);
+//     }
+
+//     return response()->json(['message' => trans($status)], 400);
+// }
+
+
+    
     // Method to show the reset password form
     public function showResetForm(Request $request, $token = null)
     {
@@ -91,4 +99,65 @@ class ForgotPasswordController extends Controller
             ['token' => $token, 'email' => $request->email]
         );
     }
+
+
+    public function reset(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|exists:client,email',
+        'token' => 'required',
+        'password' => 'required|string|min:6|confirmed',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 403);
+    }
+
+    // Log the reset request for debugging
+    Log::info('Password reset request', [
+        'email' => $request->email,
+        'token' => $request->token,
+    ]);
+
+    // Attempt to reset the password
+    $status = Password::broker('clients')->reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($client, $password) {
+            $client->forceFill([
+                'password' => bcrypt($password),
+            ])->save();
+
+            // Send notification email after successful password reset
+            Mail::to($client->email)->send(new PasswordChangedNotification($client));
+        }
+    );
+
+    // Log the status of the reset operation
+    Log::info('Reset status', ['status' => $status]);
+
+    // if ($status === Password::PASSWORD_RESET) {
+    //     // Instead of returning JSON, return a view for success
+    //     return view('auth.passwords.reset_success');
+    // }
+
+    //   // Handle invalid token
+    // if ($status === Password::INVALID_TOKEN) {
+    //     return view('auth.passwords.invalid_token');
+    // }
+    if ($status === Password::PASSWORD_RESET) {
+        // Instead of returning JSON, return a view for success
+        return view('auth.passwords.reset_success');
+    } else {
+        // Handle invalid token case
+        return view('auth.passwords.invalid_token'); // Return the invalid token view
+    }
+
+    return response()->json(['message' => trans($status)], 400);
+}
+
+
+
+
+
+
 }

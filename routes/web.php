@@ -59,10 +59,14 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     return 'Email Sent';
 });
 
-//     Route::get('password/reset/{token}', function ($token) {
-//     return view('auth.passwords.reset', ['token' => $token]);
-// })->name('password.reset');
 
     Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+    //Route::view('password/reset/success', 'auth.passwords.reset_success')->name('password.reset.success');
+    Route::get('password/reset/success', function () {
+    return view('auth.passwords.reset_success');
+})->name('password.success');
+    Route::get('password/request', function () {
+    return view('auth.passwords.request'); // Adjust the view name as needed
+})->name('password.request');
 
 

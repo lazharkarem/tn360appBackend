@@ -23,7 +23,9 @@ class ResetPasswordMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.reset_password') // Ensure you have this view
+        return $this->from(config('mail.from.address'), '360tn-support') // Update sender name
+            ->subject('Réinitialiser le mot de passe') // Set the email subject
+            ->view('emails.reset_password') // Ensure you have this view
             ->with([
                 'client' => $this->client,
                 'token' => $this->token,

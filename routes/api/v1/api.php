@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset'); // Use the reset method in the same controller
         Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
         Route::post('password/update', [ForgotPasswordController::class, 'reset'])->name('password.update');
+        
 
 
 
