@@ -32,7 +32,7 @@ MAIL_USERNAME: "karem.lazhar@gmail.com"
 MAIL_PASSWORD: "etbw solh vuex qreh"
 MAIL_ENCRYPTION: "tls"
 MAIL_FROM_ADDRESS: "karem.lazhar@gmail.com"
-MAIL_FROM_NAME: "${APP_NAME}"
+MAIL_FROM_NAME: "360tn-support"
 
 # Additional configurations if needed
 BROADCAST_DRIVER: "log"
