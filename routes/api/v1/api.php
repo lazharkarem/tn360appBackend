@@ -26,6 +26,18 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('register', 'Customer1AuthController@register');
         Route::post('login', 'Customer1AuthController@login');
+        Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+        Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset'); // Use the reset method in the same controller
+
+
+
+        // Route::post('password-email', 'ForgotPasswordController@sendResetLinkEmail');
+        // Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
+        // ->name('password.reset');
+
+
+        // Route::get('reset-password/{token}', 'ResetPasswordController@showResetForm');
+        // Route::post('password/reset', [ResetPasswordController::class, 'reset']);
         });
 
 

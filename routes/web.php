@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PushNotificationController;
 
+use Illuminate\Support\Facades\Mail;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +49,12 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     Route::get('/manage-marques', 'MarqueController@index')->name('manage.marques');
     Route::post('/marquees', 'MarqueController@store')->name('marquees.store');
 
+
+    Route::get('/test-email', function () {
+    Mail::raw('This is a test email', function ($message) {
+        $message->to('karem.lazhar@gmail.com')
+                ->subject('Test Email');
+    });
+    return 'Email Sent';
+});
 

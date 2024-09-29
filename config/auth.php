@@ -89,19 +89,20 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'clients' => [
+            'provider' => 'client',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
+    
 
-        'client' => [
-            'provider' => 'client',
-            'table' => 'password_resets',  // You might need a separate table if required
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+        // 'clients' => [
+        //     'provider' => 'client',
+        //     'table' => 'password_resets',  // You might need a separate table if required
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
     ],
 
     /*
