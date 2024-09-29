@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PushNotificationController;
+use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -38,16 +39,16 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     Route::get('get-notification-form', [PushNotificationController::class, 'create']);
     Route::post('send','MyController@bulksend')->name('bulksend');
 
-    Route::post('reset_password_without_token', 'AccountsController@validatePasswordRequest');
-    Route::post('reset_password_with_token', 'AccountsController@resetPassword');
+    // Route::post('reset_password_without_token', 'AccountsController@validatePasswordRequest');
+    // Route::post('reset_password_with_token', 'AccountsController@resetPassword');
 
 
-    Route::post('/marques', [MarqueController::class, 'create']);
-    Route::delete('/marques/{id}', [MarqueController::class, 'delete']);
-    Route::put('/marques/{id}', [MarqueController::class, 'edit']);
+    // Route::post('/marques', [MarqueController::class, 'create']);
+    // Route::delete('/marques/{id}', [MarqueController::class, 'delete']);
+    // Route::put('/marques/{id}', [MarqueController::class, 'edit']);
 
-    Route::get('/manage-marques', 'MarqueController@index')->name('manage.marques');
-    Route::post('/marquees', 'MarqueController@store')->name('marquees.store');
+    // Route::get('/manage-marques', 'MarqueController@index')->name('manage.marques');
+    // Route::post('/marquees', 'MarqueController@store')->name('marquees.store');
 
 
     Route::get('/test-email', function () {
@@ -57,4 +58,11 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     });
     return 'Email Sent';
 });
+
+//     Route::get('password/reset/{token}', function ($token) {
+//     return view('auth.passwords.reset', ['token' => $token]);
+// })->name('password.reset');
+
+    Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+
 

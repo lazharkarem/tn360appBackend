@@ -10,42 +10,41 @@ use App\Mail\ResetPasswordMail; // Import your mail class
 use Illuminate\Support\Facades\Mail;
 use App\Models\Client;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log; // Import Log facade
 
 class ForgotPasswordController extends Controller
 {
     // Method to send reset link
     public function sendResetLinkEmail(Request $request)
-{
-    $request->validate(['email' => 'required|email']);
+    {
+        $request->validate(['email' => 'required|email']);
 
-    $status = Password::broker('clients')->sendResetLink(
-        $request->only('email')
-    );
-
-    if ($status === Password::RESET_LINK_SENT) {
         // Fetch the client based on the email
         $client = Client::where('email', $request->email)->first();
 
-        // If client is found, send the email
+        // If client is found, generate the token and send the email
         if ($client) {
-            $token = Password::broker('clients')->createToken($client); // Create the token
+            // Generate the token first and use it both in the email and response
+            $token = Password::broker('clients')->createToken($client);
 
             // Generate the password reset URL
             $url = URL::temporarySignedRoute(
-                'password.reset', // Named route for password reset
-                now()->addMinutes(60), // Expiration time
+                'password.reset',
+                now()->addMinutes(60),
                 ['email' => $client->email, 'token' => $token]
             );
 
             // Pass the client, token, and URL to the ResetPasswordMail
             Mail::to($client->email)->send(new ResetPasswordMail($client, $token, $url));
+
+            return response()->json([
+                'message' => 'We have emailed your password reset link!',
+                'token' => $token, // Include the token in the response
+            ], 200);
         }
 
-        return response()->json(['message' => trans($status)], 200);
+        return response()->json(['message' => 'We couldn\'t find a user with that email address.'], 400);
     }
-
-    return response()->json(['message' => trans($status)], 400);
-}
 
     // Unified reset method
     public function reset(Request $request)
@@ -60,6 +59,12 @@ class ForgotPasswordController extends Controller
             return response()->json(['errors' => $validator->errors()], 403);
         }
 
+        // Log the reset request for debugging
+        Log::info('Password reset request', [
+            'email' => $request->email,
+            'token' => $request->token,
+        ]);
+
         $status = Password::broker('clients')->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($client, $password) {
@@ -69,10 +74,21 @@ class ForgotPasswordController extends Controller
             }
         );
 
+        // Log the status of the reset operation
+        Log::info('Reset status', ['status' => $status]);
+
         if ($status === Password::PASSWORD_RESET) {
             return response()->json(['message' => trans($status)], 200);
         }
 
         return response()->json(['message' => trans($status)], 400);
+    }
+
+    // Method to show the reset password form
+    public function showResetForm(Request $request, $token = null)
+    {
+        return view('auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
     }
 }

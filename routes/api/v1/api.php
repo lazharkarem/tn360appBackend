@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::post('login', 'Customer1AuthController@login');
         Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset'); // Use the reset method in the same controller
+        Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+        Route::post('password/update', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
 
 
 
@@ -42,7 +46,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
 
 
         Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
-            Route::get('notifications', 'NotificationController@get_notifications');
+            // Route::get('notifications', 'NotificationController@get_notifications');
 
 
             Route::get('info', 'CustomerController@info');
@@ -82,13 +86,13 @@ Route::group(['namespace' => 'Api\V1'], function () {
     });
 
 
-     Route::group(['prefix' => 'marques'], function () {
-        Route::get('/', 'MarqueController@index'); // Retrieve all marques
-        Route::post('/', 'MarqueController@store'); // Create a new marque
-        Route::get('/{id}', 'MarqueController@show'); // Retrieve a specific marque
-        Route::put('/{id}', 'MarqueController@update'); // Update a specific marque
-        Route::delete('/{id}', 'MarqueController@destroy'); // Delete a specific marque
-    });
+    //  Route::group(['prefix' => 'marques'], function () {
+    //     Route::get('/', 'MarqueController@index'); // Retrieve all marques
+    //     Route::post('/', 'MarqueController@store'); // Create a new marque
+    //     Route::get('/{id}', 'MarqueController@show'); // Retrieve a specific marque
+    //     Route::put('/{id}', 'MarqueController@update'); // Update a specific marque
+    //     Route::delete('/{id}', 'MarqueController@destroy'); // Delete a specific marque
+    // });
 
 
 
