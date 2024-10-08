@@ -2,6 +2,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\V1\Auth\UpdateProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,20 +30,19 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::post('login', 'Customer1AuthController@login');
         Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset'); // Use the reset method in the same controller
-        Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
-        Route::post('password/update', [ForgotPasswordController::class, 'reset'])->name('password.update');
-        
+        // Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+        // Route::post('password/update', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
+        //  Route::post('change-password', 'Customer1AuthController@changePassword');
+        // Route::post('change-password', 'Customer1AuthController@changePassword')->middleware('auth:client');
+        Route::middleware('auth:sanctum')->post('change-password', 'Customer1AuthController@changePassword');
+
+        Route::middleware('auth:sanctum')->post('profile/update', 'UpdateProfileController@updateProfile');
 
 
 
 
-        // Route::post('password-email', 'ForgotPasswordController@sendResetLinkEmail');
-        // Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
-        // ->name('password.reset');
 
-
-        // Route::get('reset-password/{token}', 'ResetPasswordController@showResetForm');
-        // Route::post('password/reset', [ResetPasswordController::class, 'reset']);
         });
 
 

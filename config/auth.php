@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'clients',  // Default password reset configuration for users
+        'passwords' => 'client',  // Default password reset configuration for users
     ],
 
     /*
@@ -35,6 +35,11 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',  // For admin dashboard
+        ],
+
+         'client' => [  // Add this section for the client guard
+            'driver' => 'session',  // or 'api' if you are using sanctum for API authentication
+            'provider' => 'client',
         ],
 
         'api' => [
@@ -89,7 +94,7 @@ return [
     */
 
     'passwords' => [
-        'clients' => [
+        'client' => [
             'provider' => 'client',
             'table' => 'password_resets',
             'expire' => 60,

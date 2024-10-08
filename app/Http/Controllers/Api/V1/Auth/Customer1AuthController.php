@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Import Hash facade
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken; // Import Sanctum's PersonalAccessToken
 
@@ -111,5 +112,34 @@ class Customer1AuthController extends Controller
 
         return response()->json(['token' => $token, 'is_tel_verified' => 0, 'tel_verify_end_url' => "api/v1/auth/verify-phone"], 200);
     }
+
+public function changePassword(Request $request)
+{
+    // Validate the request
+    $validator = Validator::make($request->all(), [
+        'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422); // Return validation errors
+    }
+
+    $user = auth()->user(); // Get the authenticated user
+
+    // Ensure the user exists
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    // Update the password
+    $user->password = Hash::make($request->new_password);
+    
+    if ($user->save()) {
+        return response()->json(['message' => 'Password changed successfully'], 200);
+    }
+
+    return response()->json(['message' => 'Failed to change password'], 500); // Handle potential save failure
 }
 
+
+}
