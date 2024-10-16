@@ -28,6 +28,11 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('drinks', 'ProductController@get_drinks');
     });
 
+       Route::group(['prefix' => 'categories'], function () {
+        Route::get('food-types', 'FoodTypeApiController@index');
+      
+    });
+
     // Authentication routes
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('register', 'Customer1AuthController@register');
@@ -56,6 +61,8 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::post('update-interest', 'CustomerController@update_interest');
         Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
         Route::get('suggested-foods', 'CustomerController@get_suggested_food');
+
+       
 
         // Address routes
         Route::group(['prefix' => 'address'], function () {

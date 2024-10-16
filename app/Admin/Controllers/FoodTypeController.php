@@ -32,18 +32,21 @@ class FoodTypeController extends AdminController
      * @param mixed $id
      * @return Show
      */
-    protected function detail($id)
-    {
-        $show = new Show(FoodType::findOrFail($id));
+        protected function detail($id)
+            {
+                $show = new Show(FoodType::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('title', __('Title'));
-        $show->field('description', __('Description'));
-        $show->field('order', __('Order'));
-        $show->field('created_at', __('Created_at'));
-        $show->field('updated_at', __('Updated_at'));
-        return $show;
-    }
+                $show->field('id', __('Id'));
+                $show->field('title', __('Title'));
+                $show->field('description', __('Description'));
+                $show->field('order', __('Order'));
+                $show->field('picture', __('Picture'))->image('/storage/images/food_types/', 100, 100); // Show the uploaded image
+                $show->field('created_at', __('Created_at'));
+                $show->field('updated_at', __('Updated_at'));
+
+                return $show;
+            }
+
 
     /**
      * Make a form builder.
@@ -57,6 +60,8 @@ class FoodTypeController extends AdminController
         $form->text('title', __('Title'));
         $form->textarea('description', __('Description'));
         $form->number('order', __('Order'))->default(1);
+        
+            $form->image('picture', __('Picture'))->move('images/food_types')->uniqueName()->removable();
         return $form;
     }
 }

@@ -12,6 +12,8 @@ class FoodType extends Model
     //table name
     protected $table = 'food_types';
 
+    protected $fillable = ['title', 'parent_id', 'picture'];
+
     public function getList(){
         return $this->get();
     }
