@@ -40,7 +40,7 @@ class FoodTypeController extends AdminController
                 $show->field('title', __('Title'));
                 $show->field('description', __('Description'));
                 $show->field('order', __('Order'));
-                $show->field('picture', __('Picture'))->image('/storage/images/food_types/', 100, 100); // Show the uploaded image
+                $show->field('picture', __('Picture'))->image('', 60, 60); // Show the uploaded image
                 $show->field('created_at', __('Created_at'));
                 $show->field('updated_at', __('Updated_at'));
 
