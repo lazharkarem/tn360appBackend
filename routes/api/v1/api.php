@@ -1,8 +1,12 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Auth\UpdateProfileController;
+use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\Auth\VerificationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,47 +20,44 @@ use App\Http\Controllers\Api\V1\Auth\UpdateProfileController;
 */
 
 Route::group(['namespace' => 'Api\V1'], function () {
-
-    //get products
+    
+    // Product routes
     Route::group(['prefix' => 'products'], function () {
         Route::get('popular', 'ProductController@get_popular_products');
-         Route::get('recommended', 'ProductController@get_recommended_products');
-          Route::get('drinks', 'ProductController@get_drinks');
+        Route::get('recommended', 'ProductController@get_recommended_products');
+        Route::get('drinks', 'ProductController@get_drinks');
     });
 
-    //registration and login
-        Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+    // Authentication routes
+    Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('register', 'Customer1AuthController@register');
-        Route::post('login', 'Customer1AuthController@login');
+        Route::post('login', 'Customer1AuthController@login')->name('login');
+        
+        // Password reset routes
         Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-        Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset'); // Use the reset method in the same controller
-        // Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
-        // Route::post('password/update', [ForgotPasswordController::class, 'reset'])->name('password.update');
+        Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 
-        //  Route::post('change-password', 'Customer1AuthController@changePassword');
-        // Route::post('change-password', 'Customer1AuthController@changePassword')->middleware('auth:client');
-        Route::middleware('auth:sanctum')->post('change-password', 'Customer1AuthController@changePassword');
-
-        Route::middleware('auth:sanctum')->post('profile/update', 'UpdateProfileController@updateProfile');
-
-
-
-
-
+        // Protected routes
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('change-password', 'Customer1AuthController@changePassword');
+            Route::post('profile/update', 'UpdateProfileController@updateProfile');
         });
 
+        // Email verification routes
+        Route::post('verify-email', 'Customer1AuthController@verify')->name('verification.verify');
+        Route::post('verify-email/{id}/{hash}', 'Customer1AuthController@verify')->name('verification.verify'); // Ensure this matches the intended functionality
+    });
 
-        Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
-            // Route::get('notifications', 'NotificationController@get_notifications');
+    // Customer routes
+    Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
+        Route::get('info', 'CustomerController@info');
+        Route::get('info1', 'ClientController@info');
+        Route::post('update-profile', 'CustomerController@update_profile');
+        Route::post('update-interest', 'CustomerController@update_interest');
+        Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
+        Route::get('suggested-foods', 'CustomerController@get_suggested_food');
 
-
-            Route::get('info', 'CustomerController@info');
-            Route::get('info1', 'ClientController@info');
-            Route::post('update-profile', 'CustomerController@update_profile');
-            Route::post('update-interest', 'CustomerController@update_interest');
-            Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
-            Route::get('suggested-foods', 'CustomerController@get_suggested_food');
-
+        // Address routes
         Route::group(['prefix' => 'address'], function () {
             Route::get('list', 'ClientController@address_list');
             Route::post('add', 'ClientController@add_new_address');
@@ -64,8 +65,8 @@ Route::group(['namespace' => 'Api\V1'], function () {
             Route::delete('delete', 'ClientController@delete_address');
         });
 
-
-                Route::group(['prefix' => 'order'], function () {
+        // Order routes
+        Route::group(['prefix' => 'order'], function () {
             Route::get('list', 'OrderController@get_order_list');
             Route::get('running-orders', 'OrderController@get_running_orders');
             Route::get('details', 'OrderController@get_order_details');
@@ -75,9 +76,10 @@ Route::group(['namespace' => 'Api\V1'], function () {
             Route::get('track', 'OrderController@track_order');
             Route::put('payment-method', 'OrderController@update_payment_method');
         });
-            });
+    });
 
-        Route::group(['prefix' => 'config'], function () {
+    // Configuration routes
+    Route::group(['prefix' => 'config'], function () {
         Route::get('/', 'ConfigController@configuration');
         Route::get('/get-zone-id', 'ConfigController@get_zone');
         Route::get('place-api-autocomplete', 'ConfigController@place_api_autocomplete');
@@ -86,31 +88,15 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('geocode-api', 'ConfigController@geocode_api');
     });
 
-
-    //  Route::group(['prefix' => 'marques'], function () {
-    //     Route::get('/', 'MarqueController@index'); // Retrieve all marques
-    //     Route::post('/', 'MarqueController@store'); // Create a new marque
-    //     Route::get('/{id}', 'MarqueController@show'); // Retrieve a specific marque
-    //     Route::put('/{id}', 'MarqueController@update'); // Update a specific marque
-    //     Route::delete('/{id}', 'MarqueController@destroy'); // Delete a specific marque
-    // });
-
-
-
+    // Deals routes (to be implemented)
     Route::group(['prefix' => 'deal'], function () {
-});
+        // Add deal routes here
+    });
 
+    // Deal information routes
     Route::get('offre', 'OffreController@getDealOffreInfo');
     Route::get('dealDepense', 'DealDepenseController@getDealDepenseInfo');
     Route::get('dealMarque', 'DealMarqueController@getDealMarqueInfo');
     Route::get('dealFrequence', 'DealFrequenceController@getDealFrequenceInfo');
     Route::get('dealAnniversaire', 'DealAnniversaireController@getDealAnniversaireInfo');
-
-
-
-
-
-
-
-
 });

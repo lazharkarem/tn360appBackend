@@ -57,4 +57,15 @@ class Client extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+      public function hasVerifiedEmail()
+    {
+        return !is_null($this->email_verified_at);
+    }
+
+    public function markEmailAsVerified()
+    {
+        $this->email_verified_at = now();
+        $this->save();
+    }
+
 }

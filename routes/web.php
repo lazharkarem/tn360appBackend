@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
-
+use App\Http\Controllers\Api\V1\ClientController;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 /*
@@ -68,5 +70,3 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     Route::get('password/request', function () {
     return view('auth.passwords.request'); // Adjust the view name as needed
 })->name('password.request');
-
-

@@ -102,4 +102,11 @@ class ClientController extends Controller
 
         return response()->json(['message' => trans('messages.updated_successfully')], 200);
     }
+
+
+
+  
+
+
+
 }
