@@ -40,7 +40,7 @@ class FoodTypeController extends AdminController
                 $show->field('title', __('Title'));
                 $show->field('description', __('Description'));
                 $show->field('order', __('Order'));
-                $show->field('picture', __('Picture'))->image('', 60, 60); // Show the uploaded image
+                $show->field('picture', __('Thumbnail Photo'))->image('',60,60);
                 $show->field('created_at', __('Created_at'));
                 $show->field('updated_at', __('Updated_at'));
 
@@ -61,7 +61,7 @@ class FoodTypeController extends AdminController
         $form->textarea('description', __('Description'));
         $form->number('order', __('Order'))->default(1);
         
-            $form->image('picture', __('Picture'))->move('images/food_types')->uniqueName()->removable();
+        $form->image('picture', __('Thumbnail'))->uniqueName();
         return $form;
     }
 }

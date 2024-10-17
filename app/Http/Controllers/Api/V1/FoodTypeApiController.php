@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class FoodTypeApiController extends Controller
 {
+    
     public function index()
     {
         // Get all food types
