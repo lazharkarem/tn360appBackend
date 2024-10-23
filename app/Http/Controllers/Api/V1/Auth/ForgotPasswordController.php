@@ -26,7 +26,7 @@ class ForgotPasswordController extends Controller
         // If client is found, generate the token and send the email
         if ($client) {
             // Generate the token first and use it both in the email and response
-            $token = Password::broker('clients')->createToken($client);
+            $token = Password::broker('client')->createToken($client);
 
             // Generate the password reset URL
             $url = URL::temporarySignedRoute(
@@ -120,7 +120,7 @@ class ForgotPasswordController extends Controller
     ]);
 
     // Attempt to reset the password
-    $status = Password::broker('clients')->reset(
+    $status = Password::broker('client')->reset(
         $request->only('email', 'password', 'password_confirmation', 'token'),
         function ($client, $password) {
             $client->forceFill([

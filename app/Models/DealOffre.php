@@ -15,21 +15,25 @@ class DealOffre extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class, 'ID_client');
+        // return $this->belongsTo(Client::class, 'ID_client');
+        return $this->belongsTo(Client::class, 'ID_client', 'ID_client');
     }
 
     public function offreStatut()
     {
+        // return $this->belongsTo(OffreStatut::class, 'statut', 'statut');
         return $this->belongsTo(OffreStatut::class, 'statut', 'statut');
     }
 
      public function offreCanal()
     {
+        // return $this->belongsTo(OffreCanal::class, 'canal', 'canal');
         return $this->belongsTo(OffreCanal::class, 'canal', 'canal');
     }
 
     public function typeOffre()
     {
+        // return $this->belongsTo(OffreTypeOffre::class, 'type_offre', 'type_offre');
         return $this->belongsTo(OffreTypeOffre::class, 'type_offre', 'type_offre');
     }
 }
