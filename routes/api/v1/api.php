@@ -42,6 +42,9 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 
+        Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.update');
+
+
         // Protected routes
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('change-password', 'Customer1AuthController@changePassword');

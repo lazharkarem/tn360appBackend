@@ -47,51 +47,6 @@ class ForgotPasswordController extends Controller
         return response()->json(['message' => 'We couldn\'t find a user with that email address.'], 400);
     }
 
-    // Unified reset method
-
-
-// public function reset(Request $request)
-// {
-//     $validator = Validator::make($request->all(), [
-//         'email' => 'required|email|exists:client,email',
-//         'token' => 'required',
-//         'password' => 'required|string|min:6|confirmed',
-//     ]);
-
-//     if ($validator->fails()) {
-//         return response()->json(['errors' => $validator->errors()], 403);
-//     }
-
-//     // Log the reset request for debugging
-//     Log::info('Password reset request', [
-//         'email' => $request->email,
-//         'token' => $request->token,
-//     ]);
-
-//     $status = Password::broker('clients')->reset(
-//         $request->only('email', 'password', 'password_confirmation', 'token'),
-//         function ($client, $password) {
-//             $client->forceFill([
-//                 'password' => bcrypt($password),
-//             ])->save();
-
-//             // Send notification email after successful password reset
-//             Mail::to($client->email)->send(new PasswordChangedNotification($client));
-//         }
-//     );
-
-//     // Log the status of the reset operation
-//     Log::info('Reset status', ['status' => $status]);
-
-//     if ($status === Password::PASSWORD_RESET) {
-//         return response()->json(['message' => 'Votre mot de passe a été réinitialisé avec succès!'], 200);
-//     }
-
-//     return response()->json(['message' => trans($status)], 400);
-// }
-
-
-    
     // Method to show the reset password form
     public function showResetForm(Request $request, $token = null)
     {
