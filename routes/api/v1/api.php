@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Auth\UpdateProfileController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\Auth\VerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Api\V1\BannerController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -109,4 +110,13 @@ Route::group(['namespace' => 'Api\V1'], function () {
     Route::get('dealMarque', 'DealMarqueController@getDealMarqueInfo');
     Route::get('dealFrequence', 'DealFrequenceController@getDealFrequenceInfo');
     Route::get('dealAnniversaire', 'DealAnniversaireController@getDealAnniversaireInfo');
+
+
+     Route::group(['prefix' => 'banners'], function () {
+       Route::get('/', 'BannerController@index'); // Get all banners
+        Route::get('{id}', 'BannerController@show'); // Get a specific banner
+        Route::post('/', 'BannerController@store'); // Create a new banner
+        Route::put('{id}', 'BannerController@update'); // Update a specific banner
+        Route::delete('{id}', 'BannerController@destroy'); // Delete a specific banner
+    });
 });

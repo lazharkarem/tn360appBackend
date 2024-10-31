@@ -60,7 +60,7 @@ class FoodTypeController extends AdminController
         $form->text('title', __('Title'));
         $form->textarea('description', __('Description'));
         $form->number('order', __('Order'))->default(1);
-        
+
         $form->image('picture', __('Thumbnail'))->uniqueName();
         return $form;
     }
