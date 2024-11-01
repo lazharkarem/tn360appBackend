@@ -113,7 +113,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
 
 
      Route::group(['prefix' => 'banners'], function () {
-       Route::get('/', 'BannerController@index'); // Get all banners
+       Route::get('get-all', 'BannerController@index'); // Get all banners
         Route::get('{id}', 'BannerController@show'); // Get a specific banner
         Route::post('/', 'BannerController@store'); // Create a new banner
         Route::put('{id}', 'BannerController@update'); // Update a specific banner
