@@ -11,7 +11,6 @@ class BannerApiController extends Controller
     
     public function index()
     {
-        // Get all food types
         $banners = Banner::all();
 
         // Return as JSON response
