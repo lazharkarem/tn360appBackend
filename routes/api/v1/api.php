@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\V1\Auth\UpdateProfileController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\Auth\VerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Api\V1\BannerController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +28,15 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('drinks', 'ProductController@get_drinks');
     });
 
-       Route::group(['prefix' => 'categories'], function () {
+    Route::group(['prefix' => 'categories'], function () {
         Route::get('food-types', 'FoodTypeApiController@index');
-      
+    });
+    Route::group(['prefix' => 'banners'], function () {
+       Route::get('get-all', 'BannerController@index'); // Get all banners
+        Route::get('{id}', 'BannerController@show'); // Get a specific banner
+        Route::post('/', 'BannerController@store'); // Create a new banner
+        Route::put('{id}', 'BannerController@update'); // Update a specific banner
+        Route::delete('{id}', 'BannerController@destroy'); // Delete a specific banner
     });
 
     // Authentication routes
@@ -112,11 +117,5 @@ Route::group(['namespace' => 'Api\V1'], function () {
     Route::get('dealAnniversaire', 'DealAnniversaireController@getDealAnniversaireInfo');
 
 
-     Route::group(['prefix' => 'banners'], function () {
-       Route::get('get-all', 'BannerController@index'); // Get all banners
-        Route::get('{id}', 'BannerController@show'); // Get a specific banner
-        Route::post('/', 'BannerController@store'); // Create a new banner
-        Route::put('{id}', 'BannerController@update'); // Update a specific banner
-        Route::delete('{id}', 'BannerController@destroy'); // Delete a specific banner
-    });
+    
 });
