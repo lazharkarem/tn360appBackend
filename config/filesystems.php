@@ -45,7 +45,7 @@ return [
             'driver'     => 'local',
             'root'       => public_path('uploads'),
             'visibility' => 'public',
-            'url' => env('APP_URL').'uploads/',
+            'url' => env('APP_URL').'/uploads/',
         ],
         'disks' => [
             // ... other disk configurations ...
@@ -54,7 +54,7 @@ return [
                 'root' => env('APP_STORAGE', storage_path('app')),
                 'create_directories' => true, // Set to true
             ],
-            
+
         ],
 
         's3' => [
