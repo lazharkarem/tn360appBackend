@@ -31,6 +31,12 @@ class Food extends Model
         return $this->limit(5)->orderBy('id', 'DESC')->get();
     }
 
+     // Instance method to get foods by FoodType ID
+    public function getByFoodTypeId($foodTypeId)
+    {
+        return self::where('type_id', $foodTypeId)->get(); // `self` is used for static calls
+    }
+
 
 
 }
