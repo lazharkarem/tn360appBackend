@@ -38,23 +38,15 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
-        'admin' => [
-            'driver'     => 'local',
-            'root'       => public_path('uploads'),
-            'visibility' => 'public',
-            'url' => env('APP_URL').'/uploads/',
-        ],
-        'disks' => [
-            // ... other disk configurations ...
-            'local' => [
-                'driver' => 'local',
-                'root' => env('APP_STORAGE', storage_path('app')),
-                'create_directories' => true, // Set to true
-            ],
 
+        'admin' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+            'visibility' => 'public',
+            'url' => env('APP_URL') . '/uploads/',
         ],
 
         's3' => [

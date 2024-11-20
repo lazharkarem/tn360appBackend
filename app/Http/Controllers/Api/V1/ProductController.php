@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
@@ -7,147 +8,86 @@ use App\Models\Food;
 
 class ProductController extends Controller
 {
-
-
-      // New method to fetch all products
+    // Fetch all products
     public function getAllProducts(Request $request)
     {
-        $list = Food::all();
+        $products = Food::all();
 
-        foreach ($list as $item) {
-            $item = $this->cleanDescription($item);
-        }
+        $products = $products->map(function ($item) {
+            return $this->transformProduct($item);
+        });
 
         $data = [
-            'total_size' => $list->count(),
-            'products' => $list
+            'total_size' => $products->count(),
+            'products' => $products,
         ];
 
         return response()->json($data, 200);
     }
 
-    public function get_popular_products(Request $request){
-
-        $list = Food::where('type_id', 2)->take(10)->orderBy('created_at','DESC')->get();
-
-                foreach ($list as $item){
-                    $item['description']=strip_tags($item['description']);
-                    $item['description']=$Content = preg_replace("/&#?[a-z0-9]+;/i"," ",$item['description']);
-                    unset($item['selected_people']);
-                    unset($item['people']);
-                }
-
-                 $data =  [
-                    'total_size' => $list->count(),
-                    'type_id' => 2,
-                    'offset' => 0,
-                    'products' => $list
-                ];
-
-         return response()->json($data, 200);
-
-    }
-        public function get_recommended_products(Request $request){
-        $list = Food::where('type_id', 3)->take(10)->orderBy('created_at','DESC')->get();
-
-                foreach ($list as $item){
-                    $item['description']=strip_tags($item['description']);
-                    $item['description']=$Content = preg_replace("/&#?[a-z0-9]+;/i"," ",$item['description']);
-                    unset($item['selected_people']);
-                    unset($item['people']);
-                }
-
-                 $data =  [
-                    'total_size' => $list->count(),
-                    'type_id' => 3,
-                    'offset' => 0,
-                    'products' => $list
-                ];
-
-         return response()->json($data, 200);
+    // Fetch popular products
+    public function getPopularProducts(Request $request)
+    {
+        return $this->getFoodsByType(2, 10); // Popular products have type_id = 2
     }
 
+    // Fetch recommended products
+    public function getRecommendedProducts(Request $request)
+    {
+        return $this->getFoodsByType(3, 10); // Recommended products have type_id = 3
+    }
 
-       public function test_get_recommended_products(Request $request){
+    // Fetch drinks
+    public function getDrinks(Request $request)
+    {
+        return $this->getFoodsByType(4, 10); // Drinks have type_id = 4
+    }
 
-        $list = Food::skip(5)->take(2)->get();
+    // Fetch product details by ID
+    public function getProductDetails($id)
+    {
+        $product = Food::find($id);
 
-        foreach ($list as $item){
-            $item['description']=strip_tags($item['description']);
-            $item['description']=$Content = preg_replace("/&#?[a-z0-9]+;/i"," ",$item['description']);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
         }
 
-         $data =  [
-            'total_size' => $list->count(),
-            'limit' => 5,
-            'offset' => 0,
-            'products' => $list
-        ];
-         return response()->json($data, 200);
-        // return json_decode($list);
+        return response()->json($this->transformProduct($product), 200);
     }
 
-
-
-     public function get_drinks(Request $request){
-        $list = Food::where('type_id', 4)->take(10)->orderBy('created_at','DESC')->get();
-
-                foreach ($list as $item){
-                    $item['description']=strip_tags($item['description']);
-                    $item['description']=$Content = preg_replace("/&#?[a-z0-9]+;/i"," ",$item['description']);
-                    unset($item['selected_people']);
-                    unset($item['people']);
-                }
-
-                 $data =  [
-                    'total_size' => $list->count(),
-                    'type_id' => 4,
-                    'offset' => 0,
-                    'products' => $list
-                ];
-
-         return response()->json($data, 200);
-    }
-
-      // Common method for fetching and formatting products by type
-      public function getFoodsByType($foodTypeId)
+    // Fetch products by type with optional limit
+    public function getFoodsByType($foodTypeId, $limit = null)
     {
-        $foods = Food::where('type_id', $foodTypeId)->get();
-        $foods = $foods->map(function($item) {
-            return $this->cleanDescription($item);
+        $query = Food::where('type_id', $foodTypeId)->orderBy('created_at', 'DESC');
+
+        if ($limit) {
+            $query->take($limit);
+        }
+
+        $products = $query->get();
+
+        $transformedProducts = $products->map(function ($item) {
+            return $this->transformProduct($item);
         });
 
-        return response()->json($foods);
+        return response()->json([
+            'total_size' => Food::where('type_id', $foodTypeId)->count(),
+            'type_id' => $foodTypeId,
+            'products' => $transformedProducts,
+        ], 200);
     }
 
-    // Method to clean the description
-private function cleanDescription($product)
-{
-    $product['description'] = strip_tags($product['description']);
-    $product['description'] = preg_replace("/&#?[a-z0-9]+;/i", " ", $product['description']);
-    unset($product['selected_people']);
-    unset($product['people']);
-    
-    return $product;
-}
-
-public function getProductDetails($id)
-{
-    // Fetch the product by ID
-    $product = Food::find($id);
-
-    // If product not found, return a 404 response
-    if (!$product) {
-        return response()->json(['message' => 'Product not found'], 404);
+    // Helper function to transform product details
+    private function transformProduct($product)
+    {
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => preg_replace("/&#?[a-z0-9]+;/i", " ", strip_tags($product->description)),
+            'price' => $product->price,
+            'img' => $product->img, // Include image if necessary
+            'created_at' => $product->created_at,
+            'updated_at' => $product->updated_at,
+        ];
     }
-
-    // Clean the description and unset unwanted fields
-    $product = $this->cleanDescription($product);
-
-    return response()->json($product, 200);
-}
-
-
-
-
 }
