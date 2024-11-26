@@ -105,7 +105,31 @@ class ClientController extends Controller
 
 
 
-  
+ public function updateCagnotte(Request $request)
+{
+    // Validate that the 'cagnotte' field is provided and is a numeric value
+    $validator = Validator::make($request->all(), [
+        'cagnotte' => 'required|numeric|min:0',
+    ]);
+
+    // Return validation errors if they occur
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 403);
+    }
+
+    // Update the 'cagnotte' value for the authenticated user (client)
+    $client = $request->user(); // Get the currently authenticated client
+
+    // Add the new cagnotte value to the existing one
+    $client->cagnotte += $request->cagnotte;
+
+    // Save the changes
+    $client->save();
+
+    return response()->json(['message' => 'Cagnotte updated successfully'], 200);
+}
+
+
 
 
 
