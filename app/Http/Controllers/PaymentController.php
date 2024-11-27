@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\User;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -18,7 +18,7 @@ class PaymentController extends Controller
         session()->put('customer_id', $request['customer_id']);
         session()->put('order_id', $request->order_id);
 
-        $customer = User::find($request['customer_id']);
+        $customer = Client::find($request['customer_id']);
 
         $order = Order::where(['id' => $request->order_id, 'ID_client' => $request['customer_id']])->first();
 

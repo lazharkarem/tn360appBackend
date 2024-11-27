@@ -106,7 +106,18 @@ Route::group(['namespace' => 'Api\V1'], function () {
             Route::get('track', 'OrderController@track_order');
             Route::put('payment-method', 'OrderController@update_payment_method');
         });
+
+
+          // Payment routes
+    Route::group(['prefix' => 'payment'], function () {
+        // Payment initiation route (you can replace the route name as needed)
+        Route::post('payment', 'PaymentController@payment');
+        Route::get('success', 'PaymentController@success');
+        Route::get('fail', 'PaymentController@fail');
     });
+    });
+
+
 
     // Configuration routes
     Route::group(['prefix' => 'config'], function () {
