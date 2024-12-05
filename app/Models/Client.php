@@ -71,14 +71,30 @@ class Client extends Authenticatable implements MustVerifyEmail
 
     public function deductFromCagnotte($amount)
 {
-    if ($this->cagnotte >= $amount) {
-        $this->cagnotte -= $amount;  // Deduct the amount from cagnotte
-        $this->save();  // Save the updated balance
-    } else {
-        // Handle the case where the cagnotte balance is insufficient
-        throw new \Exception('Insufficient funds in cagnotte');
+    if ($this->cagnotte < $amount) {
+        throw new \InvalidArgumentException('Insufficient funds in cagnotte.');
     }
+
+    $this->cagnotte -= $amount;
+    $this->save();
 }
+
+
+ // Relationships
+    public function dealDepenses()
+    {
+        return $this->hasMany(DealDepense::class, 'ID_client');
+    }
+
+    public function dealFrequences()
+    {
+        return $this->hasMany(DealFrequence::class, 'ID_client');
+    }
+
+    public function dealOffres()
+    {
+        return $this->hasMany(DealOffre::class, 'ID_client');
+    }
 
 
 }

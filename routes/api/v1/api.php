@@ -134,6 +134,12 @@ Route::group(['namespace' => 'Api\V1'], function () {
         // Add deal routes here
     });
 
+    Route::group(['prefix' => 'dealdepense'], function () {
+    Route::get('dealdepense', 'DealDepenseController@getDealDepenseInfo');
+    Route::post('create', [DealDepenseController::class, 'store']);
+    Route::get('{id}', [DealDepenseController::class, 'show']);
+});
+
     // Deal information routes
     Route::get('offre', 'OffreController@getDealOffreInfo');
     Route::get('dealDepense', 'DealDepenseController@getDealDepenseInfo');

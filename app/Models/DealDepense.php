@@ -21,5 +21,10 @@ class DealDepense extends Model
         return $this->belongsTo(Client::class, 'ID_client');
     }
 
+public function dealOffre()
+{
+    return $this->belongsTo(DealOffre::class, 'ID_deal_offre', 'ID_deal_offre');
+}
+
 
 }

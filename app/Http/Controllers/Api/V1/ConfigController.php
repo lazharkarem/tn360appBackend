@@ -14,19 +14,75 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 class ConfigController extends Controller
 {
         public function geocode_api(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'lat' => 'required',
-            'lng' => 'required',
-        ]);
+{
+    // Validate lat and lng
+    $validator = Validator::make($request->all(), [
+        'lat' => 'required|numeric',
+        'lng' => 'required|numeric',
+    ]);
 
-        if ($validator->errors()->count()>0) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+    // If validation fails, return errors
+    if ($validator->fails()) {
+        return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+    }
+
+    // Make the API request to Google Geocoding API
+    $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+        'latlng' => $request->lat . ',' . $request->lng,
+        'key' => env('GOOGLE_MAPS_API_KEY'),  // Use the environment variable for API key
+    ]);
+
+    // Decode the response
+    $data = $response->json();
+
+    // Check if the response contains results
+    if (empty($data['results'])) {
+        return response()->json(['error' => 'No results found'], 404);
+    }
+
+    // Initialize variables to store address components
+    $address = '';
+    $street = '';
+    $country = '';
+    $postalCode = '';
+    $city = '';
+
+    // Loop through the address components
+    foreach ($data['results'][0]['address_components'] as $component) {
+        // Find the country
+        if (in_array('country', $component['types'])) {
+            $country = $component['long_name'];
         }
 
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$request->lat.','.$request->lng.'&key='."AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg");
-        return $response->json();
+        // Find the postal code
+        if (in_array('postal_code', $component['types'])) {
+            $postalCode = $component['long_name'];
+        }
+
+        // Find the street name
+        if (in_array('route', $component['types'])) {
+            $street = $component['long_name'];
+        }
+
+        // Find the locality (city)
+        if (in_array('locality', $component['types'])) {
+            $city = $component['long_name'];
+        }
+
+        // You can also capture the complete address if needed
+        $address = $data['results'][0]['formatted_address'];
     }
+
+    // Return the detailed address information
+    return response()->json([
+        'address' => $address,
+        'street' => $street,
+        'country' => $country,
+        'postal_code' => $postalCode,
+        'city' => $city
+    ]);
+}
+
 //             public function geocode_api(Request $request)
 // {
 //     // Validate incoming request
