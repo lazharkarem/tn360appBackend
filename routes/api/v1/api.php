@@ -49,8 +49,8 @@ Route::group(['namespace' => 'Api\V1'], function () {
     // Authentication routes
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('register', 'Customer1AuthController@register');
-        // Route::post('login', 'Customer1AuthController@login')->name('login');
-           Route::post('login', [Customer1AuthController::class,'login'])->name('login');
+        Route::post('login', 'Customer1AuthController@login')->name('login');
+        //    Route::post('login', [Customer1AuthController::class,'login'])->name('login');
         
         // Password reset routes
         Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
