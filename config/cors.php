@@ -15,15 +15,15 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],  // Ensure CSRF cookie path is allowed
 
     'allowed_methods' => ['*'],  // Allows all HTTP methods (GET, POST, etc.)
 
-    'allowed_origins' => ['http://localhost:3000'],  // Correctly allow your frontend's origin
+    'allowed_origins' => ['http://localhost:3000'],  // Allow your frontend's origin
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type', 'Authorization', 'X-Requested-With'], // Allow necessary headers
+    'allowed_headers' => ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-TOKEN'],  // Add X-CSRF-TOKEN
 
     'exposed_headers' => [],
 
