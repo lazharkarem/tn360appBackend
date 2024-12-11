@@ -19,7 +19,9 @@ return [
 
     'allowed_methods' => ['*'],  // Allows all HTTP methods (GET, POST, etc.)
 
-    'allowed_origins' => ['http://localhost:5173'],  // Allow your frontend's origin
+    // 'allowed_origins' => ['http://localhost:5173'],  // Allow your frontend's origin
+    'allowed_origins' => ['*'],  // Allow your frontend's origin
+
 
     'allowed_origins_patterns' => [],
 
