@@ -11,10 +11,10 @@ class OrderDetail extends Model
 
     protected $casts = [
         'price' => 'float',
-        'discount_on_food' => 'float',
+        'discount_on_article' => 'float',
         'total_add_on_price' => 'float',
         'tax_amount' => 'float',
-        'food_id'=> 'integer',
+        'article_id'=> 'integer',
         'order_id'=> 'integer',
         'quantity'=>'integer',
     ];
@@ -26,9 +26,9 @@ class OrderDetail extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function food()
+    public function article()
     {
-        return $this->belongsTo(Food::class,'food_id');
+        return $this->belongsTo(Article::class,'article_id');
     }
 
 }

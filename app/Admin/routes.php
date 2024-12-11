@@ -12,8 +12,8 @@ Route::group([
 ], function (Router $router) {
     $router->resource('users', UserController::class);
     $router->resource('clients', ClientController::class);
-    $router->resource('foods', FoodsController::class);
-    $router->resource('food-types', FoodTypeController::class);
+    $router->resource('articles', ArticlesController::class);
+    $router->resource('article-types', ArticleTypeController::class);
     $router->resource('marques', MarqueController::class);
     $router->resource('deal-depense', DealDepenseController::class);
     $router->resource('deal-frequence', DealFrequenceController::class);

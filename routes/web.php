@@ -21,7 +21,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
+    // return view('welcome');
 });
 
 Route::group(['prefix' => 'payment-mobile'], function () {

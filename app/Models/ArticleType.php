@@ -4,13 +4,13 @@ use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Encore\Admin\Traits\ModelTree;
 use Illuminate\Database\Eloquent\Model;
 
-class FoodType extends Model
+class ArticleType extends Model
 {
     //
     use DefaultDatetimeFormat;
     use ModelTree;
     //table name
-    protected $table = 'food_types';
+    protected $table = 'article_types';
 
     protected $fillable = ['title', 'parent_id', 'picture'];
 

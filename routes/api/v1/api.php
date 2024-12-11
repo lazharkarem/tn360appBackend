@@ -27,14 +27,14 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('recommended', 'ProductController@get_recommended_products');
         Route::get('drinks', 'ProductController@get_drinks');
         Route::get('by-type/{type}', 'ProductController@getProductByType');
-        Route::get('type/{foodTypeId}', 'ProductController@getFoodsByType');
+        Route::get('type/{articleTypeId}', 'ProductController@getArticlesByType');
         Route::get('allproducts', 'ProductController@getAllProducts');
         Route::get('product/{id}', 'ProductController@getProductDetails');
 
     });
 
     Route::group(['prefix' => 'categories'], function () {
-        Route::get('food-types', 'FoodTypeApiController@index');
+        Route::get('article-types', 'ArticleTypeApiController@index');
           // New route for getting products by type
 
     });
@@ -83,7 +83,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
 
         Route::post('update-interest', 'CustomerController@update_interest');
         Route::put('cm-firebase-token', 'CustomerController@update_cm_firebase_token');
-        Route::get('suggested-foods', 'CustomerController@get_suggested_food');
+        Route::get('suggested-articles', 'CustomerController@get_suggested_article');
          
 
        

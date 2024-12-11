@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller; // Import the base Controller class from Laravel
-use App\Models\FoodType;
+use App\Models\ArticleType;
 use Illuminate\Http\Request;
 
-class FoodTypeApiController extends Controller
+class ArticleTypeApiController extends Controller
 {
     
     public function index()
     {
-        // Get all food types
-        $foodTypes = FoodType::all();
+        $articleTypes = ArticleType::all();
 
         // Return as JSON response
-        return response()->json($foodTypes);
+        return response()->json($articleTypes);
     }
 }

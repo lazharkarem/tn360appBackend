@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\FoodType;
+use App\Models\ArticleType;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -10,20 +10,20 @@ use Encore\Admin\Show;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Tree;
 
-class FoodTypeController extends AdminController
+class ArticleTypeController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Food Type';
+    protected $title = 'Article Type';
     public function index(Content $content)
     {
-        $tree = new Tree(new FoodType);
+        $tree = new Tree(new ArticleType);
 
         return $content
-            ->header('Food Type')
+            ->header('Article Type')
             ->body($tree);
     }
     /**
@@ -34,7 +34,7 @@ class FoodTypeController extends AdminController
      */
         protected function detail($id)
             {
-                $show = new Show(FoodType::findOrFail($id));
+                $show = new Show(ArticleType::findOrFail($id));
 
                 $show->field('id', __('Id'));
                 $show->field('title', __('Title'));
@@ -55,8 +55,8 @@ class FoodTypeController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new FoodType());
-        $form->select('parent_id', __('Parent Category'))->options((new FoodType())::selectOptions());
+        $form = new Form(new ArticleType());
+        $form->select('parent_id', __('Parent Category'))->options((new ArticleType())::selectOptions());
         $form->text('title', __('Title'));
         $form->textarea('description', __('Description'));
         $form->number('order', __('Order'))->default(1);

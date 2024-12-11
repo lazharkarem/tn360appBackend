@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CentralLogics\Helpers;
-use App\Models\Food;
+use App\Models\Article;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Validator;
@@ -55,14 +55,14 @@ class OrderController extends Controller
 
         foreach ($request['cart'] as $c) {
 
-                $product = Food::find($c['id']); //checked
+                $product = Article::find($c['id']); //checked
                 if ($product) {
 
                     $price = $product['price']; //checked
 
                     $or_d = [
-                        'food_id' => $c['id'], //checked
-                        'food_details' => json_encode($product),
+                        'article_id' => $c['id'], //checked
+                        'article_details' => json_encode($product),
                         'quantity' => $c['quantity'], //checked
                         'price' => $price, //checked
                         'created_at' => now(), //checked
@@ -75,7 +75,7 @@ class OrderController extends Controller
                 } else {
                     return response()->json([
                         'errors' => [
-                            ['code' => 'food', 'message' => 'not found!']
+                            ['code' => 'article', 'message' => 'not found!']
                         ]
                     ], 401);
                 }

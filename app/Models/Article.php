@@ -3,24 +3,24 @@ namespace App\Models;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Illuminate\Database\Eloquent\Model;
 
-class Food extends Model
+class Article extends Model
 {
     use DefaultDatetimeFormat;
     //table name
-    protected $table = 'foods';
+    protected $table = 'articles';
 
      public function marque()
     {
         return $this->belongsTo(Marque::class, 'marque_id');
     }
 
-    public function FoodType(){
-        return $this->hasOne(FoodType::class, 'id', 'type_id');
+    public function ArticleType(){
+        return $this->hasOne(ArticleType::class, 'id', 'type_id');
     }
     public function getRecommended(){
         return $this->where(['is_recommend'=>1])->orderBy('id', 'DESC')->limit(3)->get();
     }
-    public function getPopularFood(){
+    public function getPopularArticle(){
         return $this->where(['type_id'=>2])->orderBy('id', 'DESC')->limit(3)->get();
     }
     public function getUnRecommended(){
@@ -31,10 +31,9 @@ class Food extends Model
         return $this->limit(5)->orderBy('id', 'DESC')->get();
     }
 
-     // Instance method to get foods by FoodType ID
-    public function getByFoodTypeId($foodTypeId)
+    public function getByArticleTypeId($articleTypeId)
     {
-        return self::where('type_id', $foodTypeId)->get(); // `self` is used for static calls
+        return self::where('type_id', $articleTypeId)->get(); // `self` is used for static calls
     }
 
 

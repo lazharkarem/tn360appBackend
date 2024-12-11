@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Food;
+use App\Models\Article;
 
 class ProductController extends Controller
 {
     // Fetch all products
     public function getAllProducts(Request $request)
     {
-        $products = Food::all();
+        $products = Article::all();
 
         $products = $products->map(function ($item) {
             return $this->transformProduct($item);
@@ -28,7 +28,7 @@ class ProductController extends Controller
     // Fetch popular products
        public function get_popular_products(Request $request){
 
-        $list = Food::where('type_id', 2)->take(10)->orderBy('created_at','DESC')->get();
+        $list = Article::where('type_id', 2)->take(10)->orderBy('created_at','DESC')->get();
 
                 foreach ($list as $item){
                     $item['description']=strip_tags($item['description']);
@@ -50,7 +50,7 @@ class ProductController extends Controller
 
     // Fetch recommended products
           public function get_recommended_products(Request $request){
-        $list = Food::where('type_id', 3)->take(10)->orderBy('created_at','DESC')->get();
+        $list = Article::where('type_id', 3)->take(10)->orderBy('created_at','DESC')->get();
 
                 foreach ($list as $item){
                     $item['description']=strip_tags($item['description']);
@@ -72,13 +72,13 @@ class ProductController extends Controller
     // Fetch drinks
     public function getDrinks(Request $request)
     {
-        return $this->getFoodsByType(4, 10); // Drinks have type_id = 4
+        return $this->getArticlesByType(4, 10); // Drinks have type_id = 4
     }
 
     // Fetch product details by ID
     public function getProductDetails($id)
     {
-        $product = Food::find($id);
+        $product = Article::find($id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -88,9 +88,9 @@ class ProductController extends Controller
     }
 
     // Fetch products by type with optional limit
-    public function getFoodsByType($foodTypeId, $limit = null)
+    public function getArticlesByType($articleTypeId, $limit = null)
     {
-        $query = Food::where('type_id', $foodTypeId)->orderBy('created_at', 'DESC');
+        $query = Article::where('type_id', $articleTypeId)->orderBy('created_at', 'DESC');
 
         if ($limit) {
             $query->take($limit);
@@ -103,8 +103,8 @@ class ProductController extends Controller
         });
 
         return response()->json([
-            'total_size' => Food::where('type_id', $foodTypeId)->count(),
-            'type_id' => $foodTypeId,
+            'total_size' => Article::where('type_id', $articleTypeId)->count(),
+            'type_id' => $articleTypeId,
             'products' => $transformedProducts,
         ], 200);
     }
