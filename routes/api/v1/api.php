@@ -76,6 +76,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('info1', 'ClientController@info');
         Route::post('update-profile', 'CustomerController@update_profile');
         Route::post('update-cagnotte', 'ClientController@updateCagnotte');
+        Route::post('deal-objective/{id}/complete', 'DealObjectiveController@handleObjectiveAchievement');
 
         Route::get('deal-frequence/{clientId}', 'DealFrequenceController@calculateDealFrequence');
 
@@ -137,8 +138,8 @@ Route::group(['namespace' => 'Api\V1'], function () {
 
     Route::group(['prefix' => 'dealdepense'], function () {
     Route::get('dealdepense', 'DealDepenseController@getDealDepenseInfo');
-    Route::post('create', [DealDepenseController::class, 'store']);
-    Route::get('{id}', [DealDepenseController::class, 'show']);
+    Route::post('create', 'DealDepenseController@store');
+    Route::get('{id}', 'DealDepenseController@show');
 });
 
     // Deal information routes
@@ -149,5 +150,15 @@ Route::group(['namespace' => 'Api\V1'], function () {
     Route::get('dealAnniversaire', 'DealAnniversaireController@getDealAnniversaireInfo');
 
 
-    
+Route::group(['prefix' => 'deal'], function () {
+    Route::post('offre/create', 'OffreController@store'); // Create an offer
+    Route::post('dealdepense/create', 'DealDepenseController@store'); // Create a deal depense
+    Route::post('offre/{id}/transfer', 'OffreStatController@transferOffre'); // Transfer offer to historique
+    Route::get('offre/historique', 'OffreStatController@getOffreHistorique'); // Get historical offers
+    Route::get('offre/active', 'OffreStatController@getActiveOffres'); // Get active offers
+});
+
+
+
+
 });

@@ -81,7 +81,7 @@ class Client extends Authenticatable implements MustVerifyEmail
 
 
  // Relationships
-    public function dealDepenses()
+    public function dealDepense()
     {
         return $this->hasMany(DealDepense::class, 'ID_client');
     }
@@ -91,10 +91,11 @@ class Client extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(DealFrequence::class, 'ID_client');
     }
 
-    public function dealOffres()
-    {
-        return $this->hasMany(DealOffre::class, 'ID_client');
-    }
+
+public function offres()
+{
+    return $this->hasMany(DealOffre::class, 'ID_client');
+}
 
 
 }

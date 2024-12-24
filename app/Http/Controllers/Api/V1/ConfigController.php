@@ -177,12 +177,14 @@ class ConfigController extends Controller
                 ['errors'=>Helpers::error_processor($validator)],
                 403);
         }
-        $response=Http::get(
-            'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='
-            .$request['search_text']
-            .'&key='
-            .'AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
+      
+             $response = Http::get(
+            'https://maps.googleapis.com/maps/api/place/autocomplete/json', [
+                'input' => $request['search_text'],
+                'key' => env('GOOGLE_MAPS_API_KEY'), // Fetch the API key from .env
+            ]
         );
+
         return $response->json();
     }
 
@@ -196,12 +198,12 @@ class ConfigController extends Controller
                 ['errors'=>Helpers::error_processor($validator)],
                 403);
         }
-        $response=Http::get(
-            'https://maps.googleapis.com/maps/api/place/details/json?placeid='
-            .$request['placeid']
-            .'&key='
-            .'AIzaSyAFwGAsC3VUZYdxkEwB43DEf5tpSx4hAZg'
-        );
+        $response = Http::get(
+        'https://maps.googleapis.com/maps/api/place/details/json', [
+            'placeid' => $request['placeid'],
+            'key' => env('GOOGLE_MAPS_API_KEY'), // Fetch the API key from .env
+        ]
+    );
         return $response->json();
     }
 

@@ -73,55 +73,62 @@ class DealDepenseController extends AdminController
     }
 
     // Form for creating or editing a Deal Depense record
-    protected function form()
-    {
-        $form = new Form(new DealDepense());
+// DealDepenseController.php
 
-        // Retrieve the client ID passed via the URL
-        $clientId = request('ID_client');
-        
-        // If ID_client is present in the request, pre-fill the client field in the form
-        if ($clientId) {
-            $client = Client::find($clientId);
-            if ($client) {
-                // Pre-fill the ID_client field and make it read-only (non-editable)
-                $form->select('ID_client', __('Client'))->options([$clientId => $client->nom_et_prenom])->default($clientId)->readonly();
-            }
-        } else {
-            // If no client ID is provided, show all clients for selection
-            $form->select('ID_client', __('Client'))->options(Client::all()->pluck('nom_et_prenom', 'ID_client'))->required();
+    public function form()
+{
+    $form = new Form(new DealDepense());
+
+    // Retrieve IDs from the request
+    $clientId = request('ID_client');
+    $dealOffreId = request('ID_deal_offre'); 
+
+    // Pre-fill the client field if the client ID is provided
+    if ($clientId) {
+        $client = Client::find($clientId);
+        if ($client) {
+            $form->select('ID_client', __('Client'))
+                ->options([$clientId => $client->nom_et_prenom])
+                ->default($clientId)
+                ->readonly();
         }
-
-        // Select the DealOffre (Deal Offer) for the current Deal Depense
-        // You can add any business logic to filter the available offers based on your requirements
-        // $form->select('ID_deal_offre', __('Deal Offre'))
-        //      ->options(DealOffre::all()->pluck('title', 'ID_deal_offre')) // Assuming `DealOffre` has a `title` field
-        //      ->required();
-
-        // Other fields for DealDepense
-        $form->text('segments', __('Segments'))->required();
-        
-        $form->decimal('objectif_1', __('Objectif 1'))->rules('numeric|min:0');
-        $form->decimal('objectif_2', __('Objectif 2'))->rules('numeric|min:0');
-        $form->decimal('objectif_3', __('Objectif 3'))->rules('numeric|min:0');
-        $form->decimal('objectif_4', __('Objectif 4'))->rules('numeric|min:0');
-        $form->decimal('objectif_5', __('Objectif 5'))->rules('numeric|min:0');
-
-        $form->decimal('gain_objectif_1', __('Gain Objectif 1'))->rules('numeric|min:0');
-        $form->decimal('gain_objectif_2', __('Gain Objectif 2'))->rules('numeric|min:0');
-        $form->decimal('gain_objectif_3', __('Gain Objectif 3'))->rules('numeric|min:0');
-        $form->decimal('gain_objectif_4', __('Gain Objectif 4'))->rules('numeric|min:0');
-        $form->decimal('gain_objectif_5', __('Gain Objectif 5'))->rules('numeric|min:0');
-
-        $form->decimal('compteur_objectif', __('Compteur Objectif'))->rules('numeric|min:0');
-
-        // Automatically set the ID_deal_offre if available in the request
-        $form->saving(function (Form $form) {
-            // If you're dealing with custom logic like assigning specific DealOffre
-            // make sure you adjust the ID_deal_offre based on user input or other business rules
-            $form->model()->ID_deal_offre = request('ID_deal_offre'); // Set the DealOffre ID
-        });
-
-        return $form;
+    } else {
+        $form->select('ID_client', __('Client'))
+            ->options(Client::all()->pluck('nom_et_prenom', 'ID_client'))
+            ->required();
     }
+
+    // Hidden field for `ID_deal_offre` if passed
+    if ($dealOffreId) {
+        $form->hidden('ID_deal_offre')->value($dealOffreId);
+    }
+
+    // Other fields for `deal_depense`
+    $form->text('segments', __('Segments'))->required();
+    $form->decimal('objectif_1', __('Objectif 1'))->rules('numeric|min:0');
+    $form->decimal('objectif_2', __('Objectif 2'))->rules('numeric|min:0');
+    $form->decimal('objectif_3', __('Objectif 3'))->rules('numeric|min:0');
+    $form->decimal('objectif_4', __('Objectif 4'))->rules('numeric|min:0');
+    $form->decimal('objectif_5', __('Objectif 5'))->rules('numeric|min:0');
+
+    $form->decimal('gain_objectif_1', __('Gain Objectif 1'))->rules('numeric|min:0');
+    $form->decimal('gain_objectif_2', __('Gain Objectif 2'))->rules('numeric|min:0');
+    $form->decimal('gain_objectif_3', __('Gain Objectif 3'))->rules('numeric|min:0');
+    $form->decimal('gain_objectif_4', __('Gain Objectif 4'))->rules('numeric|min:0');
+    $form->decimal('gain_objectif_5', __('Gain Objectif 5'))->rules('numeric|min:0');
+
+    $form->decimal('compteur_objectif', __('Compteur Objectif'))->rules('numeric|min:0');
+
+    // Automatically set `ID_deal_offre` during saving
+    $form->saving(function (Form $form) use ($dealOffreId) {
+        if ($dealOffreId && !$form->model()->ID_deal_offre) {
+            $form->model()->ID_deal_offre = $dealOffreId;
+        }
+    });
+
+    return $form;
+}
+
+
+
 }

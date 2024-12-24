@@ -60,14 +60,12 @@ class DealOffreController extends AdminController
         $form = new Form(new DealOffre());
 
         // Populate the client options with Client names and IDs
-        $clients = Client::all()->pluck('nom_et_prenom', 'ID_client');
-        $options = [];
-        foreach ($clients as $clientId => $nom_et_prenom) {
-            $options[$clientId] = $clientId . ' - ' . $nom_et_prenom;
-        }
+        $form->select('ID_client', __('Client'))
+            ->options(Client::all()->mapWithKeys(function ($client) {
+                return [$client->ID_client => $client->ID_client . ' - ' . $client->nom_et_prenom];
+            }))
+            ->required();
 
-        // Ensure the ID_client field is required
-        $form->select('ID_client', __('Client'))->options($options)->required();
         $form->date('date_debut', __('Date Debut'))->required();
         $form->date('date_fin', __('Date Fin'))->required();
         $form->select('canal', __('Canal'))->options([
@@ -90,51 +88,36 @@ class DealOffreController extends AdminController
             'deal_anniversaire' => 'Deal Anniversaire',
         ]);
 
-        // After saving the DealOffre, redirect to the appropriate DealDepense page based on type_offre.
+        // Validate input values before saving
         $form->saving(function (Form $form) {
-            // Validate that ID_client is set before saving the DealOffre
             if (empty($form->ID_client)) {
-                return redirect()->back()->withErrors(['ID_client' => 'Client is required.']);
+                throw new \Exception('Client is required.');
             }
         });
 
-        // Redirect to the appropriate DealDepense creation page based on the type_offre
+        // Redirect to the appropriate Deal creation page based on type_offre
         $form->saved(function (Form $form) {
             $dealOffre = $form->model(); // Get the created DealOffre instance
-
-            // Dynamically choose the redirect route based on type_offre
             $typeOffre = $dealOffre->type_offre;
 
-            switch ($typeOffre) {
-                case 'deal_depense':
-                    return redirect()->route('admin.deal-depense.create', [
-                        'ID_client' => $dealOffre->ID_client, // Pass Client ID to DealDepense form
-                        'ID_deal_offre' => $dealOffre->ID_deal_offre, // Pass DealOffre ID to DealDepense form
-                    ]);
-                case 'deal_frequence':
-                    return redirect()->route('admin.deal-frequence.create', [
-                        'ID_client' => $dealOffre->ID_client, 
-                        'ID_deal_offre' => $dealOffre->ID_deal_offre,
-                    ]);
-                case 'deal_marque':
-                    return redirect()->route('admin.deal-marque.create', [
-                        'ID_client' => $dealOffre->ID_client, 
-                        'ID_deal_offre' => $dealOffre->ID_deal_offre,
-                    ]);
-                case 'deal_diver':
-                    return redirect()->route('admin.deal-diver.create', [
-                        'ID_client' => $dealOffre->ID_client, 
-                        'ID_deal_offre' => $dealOffre->ID_deal_offre,
-                    ]);
-                case 'deal_anniversaire':
-                    return redirect()->route('admin.deal-anniversaire.create', [
-                        'ID_client' => $dealOffre->ID_client, 
-                        'ID_deal_offre' => $dealOffre->ID_deal_offre,
-                    ]);
-                default:
-                    // Fallback if no type is matched
-                    return redirect()->route('admin.deal-offre.index');
+            $routes = [
+                'deal_depense' => 'admin.deal-depense.create',
+                'deal_frequence' => 'admin.deal-frequence.create',
+                'deal_marque' => 'admin.deal-marque.create',
+                'deal_diver' => 'admin.deal-diver.create',
+                'deal_anniversaire' => 'admin.deal-anniversaire.create',
+            ];
+
+            if (isset($routes[$typeOffre])) {
+                return redirect()->route($routes[$typeOffre], [
+                    'ID_client' => $dealOffre->ID_client,
+                    'ID_deal_offre' => $dealOffre->ID_deal_offre,
+                ]);
             }
+
+            // Fallback if no valid type is matched
+            admin_toastr('Unknown offer type. Redirecting to the Deal Offers list.', 'warning');
+            return redirect()->route('admin.deal-offre.index');
         });
 
         return $form;
