@@ -8,6 +8,9 @@ use App\Models\Client;
 use App\Models\ClientAddress;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\DealHistorique;
+use App\Models\OffreHistorique;
+
 
 class ClientController extends Controller
 {
@@ -136,8 +139,33 @@ public function updateCagnotte(Request $request)
 }
 
 
+public function dealHistory(Request $request)
+    {
+        $clientId = $request->user()->ID_client;
+
+        $dealHistory = DealHistorique::where('ID_client', $clientId)
+            ->orderBy('date_debut', 'desc')
+            ->get();
+
+        return response()->json([
+            'data' => $dealHistory,
+        ], 200);
+    }
+
+    public function offerHistory(Request $request)
+    {
+        $clientId = $request->user()->ID_client;
+
+        $offerHistory = OffreHistorique::where('ID_client', $clientId)
+            ->orderBy('date_debut', 'desc')
+            ->get();
+
+        return response()->json([
+            'data' => $offerHistory,
+        ], 200);
+    }
 
 
-
+    
 
 }

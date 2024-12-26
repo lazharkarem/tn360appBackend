@@ -87,6 +87,10 @@ Route::group(['namespace' => 'Api\V1'], function () {
         Route::get('suggested-articles', 'CustomerController@get_suggested_article');
          
 
+    Route::get('deal-history', 'ClientController@dealHistory');
+    Route::get('offer-history', 'ClientController@offerHistory');
+        
+
        
 
         // Address routes
@@ -153,7 +157,7 @@ Route::group(['namespace' => 'Api\V1'], function () {
 Route::group(['prefix' => 'deal'], function () {
     Route::post('offre/create', 'OffreController@store'); // Create an offer
     Route::post('dealdepense/create', 'DealDepenseController@store'); // Create a deal depense
-    Route::post('offre/{id}/transfer', 'OffreStatController@transferOffre'); // Transfer offer to historique
+    Route::get('offre/{id}/transfer', 'OffreStatController@transferOffre'); // Transfer offer to historique
     Route::get('offre/historique', 'OffreStatController@getOffreHistorique'); // Get historical offers
     Route::get('offre/active', 'OffreStatController@getActiveOffres'); // Get active offers
 });
