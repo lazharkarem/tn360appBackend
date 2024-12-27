@@ -21,6 +21,7 @@ Route::group([
     $router->resource('deal-anniversaire', DealAnniversaireController::class);
     $router->resource('deal-offre', DealOffreController::class);
     $router->resource('banners', BannerController::class);
+     $router->resource('marques', MarquesController::class);
 
     $router->get('/', 'HomeController@index')->name('home');
 

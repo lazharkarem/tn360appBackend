@@ -8,6 +8,8 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Article;
 use App\Models\ArticleType;
+use App\Models\Marque; // Import the Marque model
+
 
 
 use Encore\Admin\Layout\Content;
@@ -34,6 +36,8 @@ class ArticlesController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
          $grid->column('ArticleType.title', __('Category'));
+         $grid->column('marque.nom_marque', __('Marque'));
+
         $grid->column('price', __('Price'));
         //$grid->column('location', __('Location'));
         $grid->column('stars', __('Stars'));
@@ -74,6 +78,9 @@ class ArticlesController extends AdminController
         $form = new Form(new Article());
         $form->text('name', __('Name'));
           $form->select('type_id', __('Type_id'))->options((new ArticleType())::selectOptions());
+          $form->select('marque_id', __('Marque'))
+     ->options(Marque::pluck('nom_marque', 'id_marque'))
+     ->required();
         $form->number('price', __('Price'));
         $form->text('location', __('Location'));
         $form->number('stars', __('Stars'));

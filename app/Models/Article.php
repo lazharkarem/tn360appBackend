@@ -9,10 +9,11 @@ class Article extends Model
     //table name
     protected $table = 'articles';
 
-     public function marque()
-    {
-        return $this->belongsTo(Marque::class, 'marque_id');
-    }
+   public function marque()
+{
+    return $this->belongsTo(Marque::class, 'marque_id');
+}
+
 
     public function ArticleType(){
         return $this->hasOne(ArticleType::class, 'id', 'type_id');
